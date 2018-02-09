@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        
-    </Grid>
+		<Image x:Name="WindowImage" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
+		<Button x:Name="WindowButtonCapture" Content="Capture" HorizontalAlignment="Left" Height="30" Margin="399,10,0,0" VerticalAlignment="Top" Width="79" Click="WindowButtonCapture_Click"/>
+	</Grid>
 </Window>
