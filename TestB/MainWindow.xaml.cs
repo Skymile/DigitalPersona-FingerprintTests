@@ -1,11 +1,13 @@
-﻿using System.Windows;
-using DPUruNet;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
-namespace TestA
+using System.Windows;
+
+using DPUruNet;
+
+namespace TestB
 {
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
@@ -15,6 +17,11 @@ namespace TestA
 		public MainWindow()
 		{
 			InitializeComponent();
+
+			//			for (int i = 2; i < 88904 / 2; i++)
+			//				if (88904 % i == 0)
+			//					Console.Write($"{i} ");
+
 			using (var readerCollection = ReaderCollection.GetReaders())
 			{
 				if (readerCollection.Count == 0)
@@ -22,7 +29,9 @@ namespace TestA
 
 				var reader = readerCollection[0];
 
-				reader.Open(Constants.CapturePriority.DP_PRIORITY_COOPERATIVE);
+				reader.Open(Constants.CapturePriority.DP_PRIORITY_EXCLUSIVE);
+
+				reader.Calibrate();
 
 				//				if (reader.GetStatus().HasFlag())
 				//					throw new ReaderNotReadyException();
@@ -34,29 +43,13 @@ namespace TestA
 					reader.Capabilities.Resolutions[0]
 				);
 
-				Console.WriteLine(captureResult.Data.Bytes.Length);
-
-				Console.WriteLine("Donee");
-
-				Bitmap bitmap = new Bitmap(reader.Capabilities.Resolutions[0], reader.Capabilities.Resolutions[0]);
-
-				BitmapData data = bitmap.LockBits(
-					new Rectangle(0, 0, bitmap.Height, bitmap.Width), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb
-				);
-
-				byte[] captured = captureResult.Data.Bytes;
-
-				Console.WriteLine(captured.Length);
-
-				Marshal.Copy(captured, 0, data.Scan0, 88904);
-
-				bitmap.UnlockBits(data);
+				Bitmap bitmap = captureResult.Data.Views[0].ToBitmap();
 
 				bitmap.Save("test.png");
 				//*/
 			}
 
-			Console.ReadLine();
+			Environment.Exit(0);
 		}
 	}
 }
