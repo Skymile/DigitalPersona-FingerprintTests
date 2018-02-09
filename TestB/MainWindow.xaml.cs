@@ -16,22 +16,21 @@ namespace TestB
 			scanner = new FingerprintScanner();
 		}
 
-		private void WindowButtonCapture_Click(object sender, RoutedEventArgs e) =>
-			WindowImage.Source = ReaderCaptureBitmap().GetSource();
-
-		private Bitmap ReaderCaptureBitmap()
+		private void WindowButtonCapture_Click(object sender, RoutedEventArgs e)
 		{
-			var reader = scanner[0];
-
-			CaptureResult captureResult = reader.Capture(
-				Constants.Formats.Fid.ANSI,
-				Constants.CaptureProcessing.DP_IMG_PROC_DEFAULT,
-				-1,
-				reader.Capabilities.Resolutions[0]
-			);
-
-			return captureResult.Data.Views[0].ToBitmap();
+			WindowImageSource = scanner.CaptureBitmap(0);
+			WindowImage.Source = WindowImageSource.GetSource();
 		}
+
+		private void WindowButtonBinarize_Click(object sender, RoutedEventArgs e)
+		{
+			
+		}
+
+		private Bitmap WindowImageSource = null;
+
+		private void WindowButtonRefresh_Click(object sender, RoutedEventArgs e) =>
+			WindowImage.Source = WindowImageSource.GetSource();
 
 		private FingerprintScanner scanner;
 	}
