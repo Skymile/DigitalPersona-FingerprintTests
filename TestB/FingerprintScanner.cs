@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 using DPUruNet;
@@ -12,9 +13,10 @@ namespace TestB
 	public class FingerprintScanner
 	{
 		/// <summary>
-		///		Initializes a new instance of <see cref="FingerprintScanner"/> class.
+		///		Initializes a static <see cref="ReaderCollection"/> of <see cref="FingerprintScanner"/> class.
 		/// </summary>
-		public FingerprintScanner()
+		/// 
+		static FingerprintScanner()
 		{
 			readerCollection = ReaderCollection.GetReaders();
 
@@ -25,33 +27,67 @@ namespace TestB
 
 			reader.Open(Constants.CapturePriority.DP_PRIORITY_COOPERATIVE);
 			reader.Calibrate();
+//			reader.ConfigureLed(Constants.LedId.ALL, Constants.LedMode.DEFAULT);
 		}
 
 		/// <summary>
-		///		
+		///		Captures <see cref="Bitmap"/> from fingerprint scanner device. 
 		/// </summary>
-		/// <param name="index">
-		///		Index of <see cref="ReaderCollection"/> reader instance.
-		/// </param>
+		/// <param name="index"> Index of <see cref="ReaderCollection"/> reader instance. By default set to 0. </param>
+		/// <param name="timeout"> Time after which scanner gives up, returns null if timed out. </param>
 		/// <returns>
 		///		Captured instance of <see cref="Bitmap"/> class.
 		/// </returns>
-		/// <exception cref="IndexOutOfRangeException"/>
-		public Bitmap CaptureBitmap(int index)
+		/// <exception cref="IndexOutOfRangeException"> 
+		///		Occurs when <paramref name="index"/> is bigger than the count of fingerprint devices. 
+		///	</exception>
+		/// <exception cref="DeviceNotFoundException"> 
+		///		Occurs when device is unplugged. 
+		///	</exception>
+		/// 
+		public Bitmap CaptureBitmap(int index = 0, int timeout = -1)
 		{
+			CaptureResult captureResult = Capture(index);
+			return captureResult.Data.Views[0].ToBitmap();
+		}
+
+		public Fid CaptureFingerprintData(int index = 0, int timeout = -1)
+		{
+			CaptureResult captureResult = Capture(index);
+			return captureResult.Data;
+		}
+
+
+		private CaptureResult Capture(int index = 0, int timeout = -1)
+		{ // TODO Check and set configuration of indexes other than 0
 			if (index > readerCollection.Count)
 				throw new IndexOutOfRangeException(nameof(index));
 
-			var reader = this[index];
+			//readerCollection[index].UpdateLed(Constants.LedId.FINGER_DETECT, Constants.LedCommand.ON);
 
-			CaptureResult captureResult = reader.Capture(
+			//readerCollection[index].Open(Constants.CapturePriority.DP_PRIORITY_COOPERATIVE);
+
+			readerCollection[0].On_Captured += FingerprintScanner_On_Captured;
+
+			CaptureResult captureResult = readerCollection[index].Capture(
 				Constants.Formats.Fid.ANSI,
 				Constants.CaptureProcessing.DP_IMG_PROC_DEFAULT,
-				-1,
-				reader.Capabilities.Resolutions[0]
+				timeout,
+				readerCollection[index].Capabilities.Resolutions[0]
 			);
 
-			return captureResult.Data.Views[0].ToBitmap();
+			//readerCollection[index].UpdateLed(Constants.LedId.FINGER_DETECT, Constants.LedCommand.OFF);
+
+			if (captureResult == null)
+				return null;
+			else if (captureResult.Data == null)
+				throw new DeviceNotFoundException(nameof(captureResult.Data));
+			return captureResult;
+		}
+
+		private void FingerprintScanner_On_Captured(CaptureResult result)
+		{
+
 		}
 
 		/// <summary>
@@ -59,16 +95,19 @@ namespace TestB
 		/// </summary>
 		/// <param name="key"></param>
 		/// <returns></returns>
+		/// 
 		public Reader this[int key] => readerCollection[key];
 
 		/// <summary>
 		///		Gets the count of available readers.
 		/// </summary>
-		public int Length => readerCollection.Count;
+		/// 
+		public static int Length => readerCollection.Count;
 
 		/// <summary>
 		///		Collection of fingerprint readers.
 		/// </summary>
-		private ReaderCollection readerCollection;
+		/// 
+		private static ReaderCollection readerCollection;
 	}
 }

@@ -13,6 +13,19 @@ namespace TestB
 {
 	public static class Support
 	{
+		/// <summary>
+		///		Converts <see cref="Fid.Fiv"/> instance into new instance of <see cref="Bitmap"/> class. 
+		/// </summary>
+		/// <param name="fingerprintData"> 
+		///		<see cref="Fid.Fiv"/> data to be converted into <see cref="Bitmap"/> instance. 
+		///	</param>
+		/// <returns> 
+		///		Instance of <see cref="Bitmap"/> class converted from <see cref="Fid.Fiv"/>; returns null if an error has occured. 
+		/// </returns>
+		/// <exception cref="NullReferenceException">
+		///		<paramref name="fingerprintData"> cannot be null. </paramref>
+		/// </exception>
+		/// 
 		public static Bitmap ToBitmap(this Fid.Fiv fingerprintData)
 		{
 			Bitmap bmp = new Bitmap(fingerprintData.Width, fingerprintData.Height, DrawImg.PixelFormat.Format24bppRgb);
@@ -45,10 +58,41 @@ namespace TestB
 			return bmp;
 		}
 
-		public static DrawImg.BitmapData LockBits(this Bitmap bitmap, DrawImg.ImageLockMode lockMode) => bitmap.LockBits(bitmap.GetRectangle(), lockMode, bitmap.PixelFormat);
+		/// <summary>
+		///		Locks the bits of given <see cref="Bitmap"/> class instance into <see cref="DrawImg.BitmapData"/> class. 
+		/// </summary>
+		/// <param name="bitmap"></param>
+		/// <param name="lockMode"></param>
+		/// <returns></returns>
+		/// <exception cref="NullReferenceException">
+		///		<see cref="Bitmap"/> <paramref name="bitmap"/> parameter cannot be null. 
+		/// </exception>
+		/// 
+		public static DrawImg.BitmapData LockBits(this Bitmap bitmap, DrawImg.ImageLockMode lockMode) => 
+			bitmap.LockBits(bitmap.GetRectangle(), lockMode, bitmap.PixelFormat);
 
-		public static Rectangle GetRectangle(this Bitmap bitmap) => new Rectangle(0, 0, bitmap.Width, bitmap.Height);
+		/// <summary>
+		///		Gets the whole area of given <see cref="Bitmap"/> class as a <see cref="Rectangle"/> struct.  
+		/// </summary>
+		/// <param name="bitmap"></param>
+		/// <returns></returns>
+		/// <exception cref="NullReferenceException">
+		///		<see cref="Bitmap"/> <paramref name="bitmap"/> instance cannot be null.
+		/// </exception>
+		/// 
+		public static Rectangle GetRectangle(this Bitmap bitmap) => 
+			new Rectangle(0, 0, bitmap.Width, bitmap.Height);
 
+		/// <summary>
+		///		Gets the <see cref="Bitmap"/> <paramref name="bitmap"/> new instance of <see cref="ImageSource"/> class. <para/>
+		///		Useful for WPF controls.	
+		/// </summary>
+		/// <param name="bitmap"></param>
+		/// <returns></returns>
+		/// <exception cref="NullReferenceException">
+		///		<see cref="Bitmap"/> <paramref name="bitmap"/> cannot be null.
+		/// </exception>
+		/// 
 		public static ImageSource GetSource(this Bitmap bitmap) => 
 			Imaging.CreateBitmapSourceFromHBitmap(
 				bitmap.GetHbitmap(),

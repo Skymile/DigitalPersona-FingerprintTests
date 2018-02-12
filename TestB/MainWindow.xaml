@@ -6,10 +6,13 @@
         xmlns:local="clr-namespace:TestB"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
-    <Grid>
+	<Grid>
 		<Image x:Name="WindowImage" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
 		<Button x:Name="WindowButtonCapture" Content="Capture" HorizontalAlignment="Left" Height="30" Margin="399,10,0,0" VerticalAlignment="Top" Width="79" Click="WindowButtonCapture_Click"/>
 		<Button x:Name="WindowButtonBinarize" Content="Binarize" HorizontalAlignment="Left" Height="30" Margin="399,45,0,0" VerticalAlignment="Top" Width="79" Click="WindowButtonBinarize_Click"/>
 		<Button x:Name="WindowButtonRefresh" Content="Refresh" HorizontalAlignment="Left" Height="30" Margin="399,80,0,0" VerticalAlignment="Top" Width="79" Click="WindowButtonRefresh_Click"/>
+		<Button x:Name="WindowButtonIdentify" Content="Identify" HorizontalAlignment="Left" Height="30" Margin="399,115,0,0" VerticalAlignment="Top" Width="79" Click="WindowButtonIdentify_Click"/>
+		<Button x:Name="WindowButtonSet" Content="Capture and set as default" HorizontalAlignment="Left" Height="30" Margin="345,279,0,0" VerticalAlignment="Top" Width="162" Click="WindowButtonSet_Click"/>
+		<Label Name="WindowLabelMatching" HorizontalAlignment="Left" Height="30" Margin="10,264,0,0" VerticalAlignment="Top" Width="163"/>
 	</Grid>
 </Window>
