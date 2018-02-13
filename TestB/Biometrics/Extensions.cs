@@ -9,9 +9,9 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace TestB
+namespace FDB.Biometrics
 {
-	public static class Support
+	public static partial class Extensions
 	{
 		/// <summary>
 		///		Converts <see cref="Fid.Fiv"/> instance into new instance of <see cref="Bitmap"/> class. 
@@ -100,5 +100,36 @@ namespace TestB
 				Int32Rect.Empty,
 				BitmapSizeOptions.FromEmptyOptions()
 			);
+
+		public static Bitmap ApplyEffect(this Bitmap bitmap, int[] matrix)
+//			where T : IConvertible
+		{
+			DrawImg.BitmapData data = bitmap.LockBits(DrawImg.ImageLockMode.ReadWrite);
+
+			byte[] input = new byte[data.Stride * data.Height];
+			byte[] output = new byte[data.Stride * data.Height];
+
+			Marshal.Copy(data.Scan0, input, 0, data.Stride * data.Height);
+
+			int bytesPerPixel = data.Stride / data.Width;
+
+			for (int i = 1; i < data.Width - 1; i++)
+				for (int j = 1; j < data.Height - 1; j++)
+				{
+					int sum = 0;
+
+					for (int k = 0; k < 9; k++)
+						sum += input[(i - 1 + (k % 3)) * bytesPerPixel + (j - 1 + (k / 3)) * data.Stride] * matrix[k];
+
+					sum = sum > 128 ? 255 : 0;
+
+					output[j * data.Stride + i * bytesPerPixel + 0] =
+						output[j * data.Stride + i * bytesPerPixel + 1] =
+						output[j * data.Stride + i * bytesPerPixel + 2] = (byte)sum;
+				}
+
+			Marshal.Copy(output, 0, data.Scan0, input.Length);
+			return bitmap;
+		}
 	}
 }

@@ -6,9 +6,9 @@ using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Windows;
 
-using DPUruNet;
+using FDB.Biometrics;
 
-namespace TestB
+namespace FDB.View
 {
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
@@ -16,7 +16,7 @@ namespace TestB
 	public partial class MainWindow : Window
 	{
 		// Temp
-		private TcpListener listener = new TcpListener(IPAddress.Parse("127.0.0.1"), 8656);
+		private TcpListener listener = new TcpListener(IPAddress.Any, 8656);
 
 		public MainWindow()
 		{
@@ -25,7 +25,7 @@ namespace TestB
 			{
 				scanner = new FingerprintScanner();
 			}
-			catch (TypeInitializationException ex)
+			catch (TypeInitializationException)
 			{
 				throw;
 			}
@@ -41,38 +41,12 @@ namespace TestB
 
 		private void WindowButtonBinarize_Click(object sender, RoutedEventArgs e)
 		{
-			int[] sharpener = new[] {
+			WindowImageSource = WindowImageSource.ApplyEffect(new[] {
 				-1, -1, -1,
 				-1,  8, -1,
 				-1, -1, -1
-			};
+			});
 
-			BitmapData data = WindowImageSource.LockBits(ImageLockMode.ReadWrite);
-
-			byte[] input = new byte[data.Stride * data.Height];
-			byte[] output = new byte[data.Stride * data.Height];
-
-			Marshal.Copy(data.Scan0, input, 0, data.Stride * data.Height);
-
-			int bytesPerPixel = data.Stride / data.Width;
-
-			for (int i = 1; i < data.Width - 1; i++)
-				for (int j = 1; j < data.Height - 1; j++)
-				{
-					int sum = 0;
-
-					for (int k = 0; k < 9; k++)
-						sum += input[(i - 1 + (k % 3)) * bytesPerPixel + (j - 1 + (k / 3)) * data.Stride] * sharpener[k];
-
-					sum = sum > 128 ? 255 : 0;
-
-					output[j * data.Stride + i * bytesPerPixel + 0] =
-						output[j * data.Stride + i * bytesPerPixel + 1] =
-						output[j * data.Stride + i * bytesPerPixel + 2] = (byte)sum;
-				}
-
-			Marshal.Copy(output, 0, data.Scan0, input.Length);
-			WindowImageSource.UnlockBits(data);
 			WindowImage.Source = WindowImageSource.GetSource();
 		}
 
@@ -83,21 +57,13 @@ namespace TestB
 
 		private FingerprintScanner scanner;
 
-		private void WindowButtonIdentify_Click(object sender, RoutedEventArgs e)
-		{
-			Fid result = scanner.CaptureFingerprintData();
-			WindowLabelMatching.Content = Comparison.Compare(
-				FeatureExtraction.CreateFmdFromFid(MainFingerprint, Constants.Formats.Fmd.ANSI).Data,
-				0,
-				FeatureExtraction.CreateFmdFromFid(result, Constants.Formats.Fmd.ANSI).Data,
-				0
-			).Score;
-		}
+		private void WindowButtonIdentify_Click(object sender, RoutedEventArgs e) =>
+			WindowLabelMatching.Content = (scanner.CaptureFingerprintData() == MainFingerprint).ToString();
 
 		private void WindowButtonSet_Click(object sender, RoutedEventArgs e) =>
 			MainFingerprint = scanner.CaptureFingerprintData();
 
-		private Fid MainFingerprint;
+		private Fingerprint MainFingerprint;
 
 		private void WindowButtonListen_Click(object sender, RoutedEventArgs e)
 		{

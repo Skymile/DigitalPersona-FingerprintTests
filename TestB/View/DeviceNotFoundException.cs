@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace TestB
+namespace FDB
 {
 	[Serializable]
 	internal class DeviceNotFoundException : Exception

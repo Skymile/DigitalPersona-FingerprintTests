@@ -2,7 +2,7 @@
 
 using System;
 
-namespace TestB
+namespace FDB
 {
 	public static class Contract
 	{

@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Threading.Tasks;
+
 using DPUruNet;
 
-namespace TestB
+namespace FDB.Biometrics
 {
 	/// <summary>
 	///		A wrapper for <see cref="ReaderCollection"/> and other fingerprint classes from DPUruNet framework. <para/>
@@ -51,12 +52,11 @@ namespace TestB
 			return captureResult.Data.Views[0].ToBitmap();
 		}
 
-		public Fid CaptureFingerprintData(int index = 0, int timeout = -1)
+		public Fingerprint CaptureFingerprintData(int index = 0, int timeout = -1)
 		{
 			CaptureResult captureResult = Capture(index);
-			return captureResult.Data;
+			return new Fingerprint(captureResult.Data);
 		}
-
 
 		private CaptureResult Capture(int index = 0, int timeout = -1)
 		{ // TODO Check and set configuration of indexes other than 0
