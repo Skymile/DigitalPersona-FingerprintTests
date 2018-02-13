@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Net;
+using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Windows;
 
@@ -13,6 +15,9 @@ namespace TestB
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		// Temp
+		private TcpListener listener = new TcpListener(IPAddress.Parse("127.0.0.1"), 8656);
+
 		public MainWindow()
 		{
 			InitializeComponent();
@@ -24,6 +29,8 @@ namespace TestB
 			{
 				throw;
 			}
+
+			WindowLabelMatching.Content = "Init";
 		}
 
 		private void WindowButtonCapture_Click(object sender, RoutedEventArgs e)
@@ -91,5 +98,28 @@ namespace TestB
 			MainFingerprint = scanner.CaptureFingerprintData();
 
 		private Fid MainFingerprint;
+
+		private void WindowButtonListen_Click(object sender, RoutedEventArgs e)
+		{
+			listener.Start();
+			byte[] bytes = new byte[256];
+			for (int cycles = 0; cycles < 1024; ++cycles)
+			{
+				TcpClient other = listener.AcceptTcpClient();
+				NetworkStream stream = other.GetStream();
+
+				if (stream.Read(bytes, 0, 256) != 0)
+					WindowLabelMatching.Content = stream.DataAvailable.ToString();
+				else
+					WindowLabelMatching.Content = "No Connection";
+
+				other.Close();
+			}
+			listener.Stop();
+			WindowLabelMatching.Content += "; Server stopped";
+		}
+
+		[Obsolete]
+		private void WindowButtonStop_Click(object sender, RoutedEventArgs e) => listener.Stop();
 	}
 }

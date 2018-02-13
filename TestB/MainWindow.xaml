@@ -7,12 +7,23 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
 	<Grid>
+		<Menu>
+			<MenuItem Name="Debug" Width="128" Height="24" Header="_Debug">
+				<MenuItem Name="Image" Width="128" Height="24" Header="_Image">
+					<MenuItem Name="Capture"  Width="128" Height="24" Header="_Capture" Click="WindowButtonCapture_Click"/>
+					<MenuItem Name="Binarize" Width="128" Height="24" Header="_Binarize" Click="WindowButtonBinarize_Click"/>
+					<MenuItem Name="Refresh"  Width="128" Height="24" Header="_Refresh" Click="WindowButtonRefresh_Click"/>
+					<MenuItem Name="Verify"   Width="128" Height="24" Header="_Verify" Click="WindowButtonIdentify_Click"/>
+					<MenuItem Name="CaptureSet" Width="168" Height="24" Header="_Capture and set as default" Click="WindowButtonSet_Click"/>
+				</MenuItem>
+				<MenuItem Name="TCP" Width="128" Height="24" Header="_TCP">
+					<MenuItem Name="Listen" Width="128" Height="24" Header="_Listen" Click="WindowButtonListen_Click"/>
+					<MenuItem Name="Stop" Width="128" Height="24" Header="_Stop" Click="WindowButtonStop_Click"/>
+				</MenuItem>
+			</MenuItem>
+		</Menu>
+		
 		<Image x:Name="WindowImage" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
-		<Button x:Name="WindowButtonCapture" Content="Capture" HorizontalAlignment="Left" Height="30" Margin="399,10,0,0" VerticalAlignment="Top" Width="79" Click="WindowButtonCapture_Click"/>
-		<Button x:Name="WindowButtonBinarize" Content="Binarize" HorizontalAlignment="Left" Height="30" Margin="399,45,0,0" VerticalAlignment="Top" Width="79" Click="WindowButtonBinarize_Click"/>
-		<Button x:Name="WindowButtonRefresh" Content="Refresh" HorizontalAlignment="Left" Height="30" Margin="399,80,0,0" VerticalAlignment="Top" Width="79" Click="WindowButtonRefresh_Click"/>
-		<Button x:Name="WindowButtonIdentify" Content="Identify" HorizontalAlignment="Left" Height="30" Margin="399,115,0,0" VerticalAlignment="Top" Width="79" Click="WindowButtonIdentify_Click"/>
-		<Button x:Name="WindowButtonSet" Content="Capture and set as default" HorizontalAlignment="Left" Height="30" Margin="345,279,0,0" VerticalAlignment="Top" Width="162" Click="WindowButtonSet_Click"/>
 		<Label Name="WindowLabelMatching" HorizontalAlignment="Left" Height="30" Margin="10,264,0,0" VerticalAlignment="Top" Width="163"/>
 	</Grid>
 </Window>

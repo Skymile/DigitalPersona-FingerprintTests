@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-
+using System.Threading.Tasks;
 using DPUruNet;
 
 namespace TestB
@@ -65,16 +65,20 @@ namespace TestB
 
 			//readerCollection[index].UpdateLed(Constants.LedId.FINGER_DETECT, Constants.LedCommand.ON);
 
-			//readerCollection[index].Open(Constants.CapturePriority.DP_PRIORITY_COOPERATIVE);
+			//readerCollection[index].Open(Constants.CapturePriority.DP_PRIORITY_COOPERATIVE
 
-			readerCollection[0].On_Captured += FingerprintScanner_On_Captured;
+			Task<CaptureResult> task = new Task<CaptureResult>(
+				() => readerCollection[index].Capture(
+						Constants.Formats.Fid.ANSI,
+						Constants.CaptureProcessing.DP_IMG_PROC_DEFAULT,
+						timeout,
+						readerCollection[index].Capabilities.Resolutions[0]
+					)
+				);
 
-			CaptureResult captureResult = readerCollection[index].Capture(
-				Constants.Formats.Fid.ANSI,
-				Constants.CaptureProcessing.DP_IMG_PROC_DEFAULT,
-				timeout,
-				readerCollection[index].Capabilities.Resolutions[0]
-			);
+			task.Start();
+
+			CaptureResult captureResult = task.Result;
 
 			//readerCollection[index].UpdateLed(Constants.LedId.FINGER_DETECT, Constants.LedCommand.OFF);
 
@@ -83,11 +87,6 @@ namespace TestB
 			else if (captureResult.Data == null)
 				throw new DeviceNotFoundException(nameof(captureResult.Data));
 			return captureResult;
-		}
-
-		private void FingerprintScanner_On_Captured(CaptureResult result)
-		{
-
 		}
 
 		/// <summary>
