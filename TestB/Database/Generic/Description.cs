@@ -3,7 +3,7 @@
 namespace FDB.Database
 {
 	public class Description<TText> : IComparable<Description<TText>>, IFormattable
-		where TText : class, IFormattable, IComparable<TText>
+		where TText : class, IComparable<TText>
 	{
 		public Description() : this(null, null, null) { }
 

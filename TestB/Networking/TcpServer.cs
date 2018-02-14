@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace FDB.Networking
 {
 	class TcpServer
 	{
-		/*
-		// Temp
-		private TcpListener listener = new TcpListener(IPAddress.Any, 8656);
-
+		public TcpServer Listen(Label notify)
 		{
 			listener.Start();
 			byte[] bytes = new byte[256];
@@ -21,15 +21,17 @@ namespace FDB.Networking
 				NetworkStream stream = other.GetStream();
 
 				if (stream.Read(bytes, 0, 256) != 0)
-					WindowLabelMatching.Content = stream.DataAvailable.ToString();
+					notify.Content = stream.DataAvailable.ToString();
 				else
-					WindowLabelMatching.Content = "No Connection";
+					notify.Content = "No Connection";
 
 				other.Close();
 			}
 			listener.Stop();
-			WindowLabelMatching.Content += "; Server stopped";
+			notify.Content += "; Server stopped";
+			return this;
 		}
-		*/
+
+		private TcpListener listener = new TcpListener(IPAddress.Any, 8656);
 	}
 }

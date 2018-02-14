@@ -16,7 +16,5 @@ namespace FDB.Database.Interface
 			Obstacle,
 			Unknown
 		}
-
-	
 	}
 }

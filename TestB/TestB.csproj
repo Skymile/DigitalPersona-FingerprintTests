@@ -103,8 +103,10 @@
     <Compile Include="Database\Generic\Record.cs" />
     <Compile Include="Database\Generic\Table.cs" />
     <Compile Include="Networking\Logger.cs" />
+    <Compile Include="Networking\LogItem.cs" />
     <Compile Include="Networking\TcpServer.cs" />
     <Compile Include="Biometrics\Extensions.cs" />
+    <Compile Include="Networking\User.cs" />
     <Compile Include="UnhandledExceptionException.cs" />
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

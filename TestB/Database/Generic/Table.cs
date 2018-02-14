@@ -12,6 +12,7 @@ namespace FDB.Database
 		where TElement : IElement
 		where TDescription : class, IComparable<TDescription>, IFormattable, new()
 	{
+
 		public Table(IDictionary<TKey, TRecord> table = null, bool isEncrypted = false)
 		{
 			this.DataTable = table;
