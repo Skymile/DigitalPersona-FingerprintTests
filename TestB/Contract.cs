@@ -1,6 +1,4 @@
-﻿//#define CSharp_Seven
-
-using System;
+﻿using System;
 
 namespace FDB
 {
@@ -20,7 +18,7 @@ namespace FDB
 			{
 				string optional = String.Join("\n", optionalDescription);
 
-#if CSharp_Seven
+#if CSHARP_SEVEN
 				TException exception = default;
 #else
 				TException exception = default(TException);
@@ -60,15 +58,15 @@ namespace FDB
 			{
 				throw ex;
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
-				throw new UnhandledExceptionException();
+				throw new UnhandledExceptionException(ex.Message);
 			}
 		}
 
 		private static string Format(Exception exception, string name, string optional)
 		{
-#if CSharp_Seven
+#if CSHARP_SEVEN
 			switch (exception)
 			{
 				case ArgumentNullException ex:

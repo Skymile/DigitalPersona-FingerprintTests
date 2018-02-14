@@ -102,12 +102,13 @@ namespace FDB.Biometrics
 			);
 
 		public static Bitmap ApplyEffect(this Bitmap bitmap, int[] matrix)
-//			where T : IConvertible
 		{
 			DrawImg.BitmapData data = bitmap.LockBits(DrawImg.ImageLockMode.ReadWrite);
 
-			byte[] input = new byte[data.Stride * data.Height];
-			byte[] output = new byte[data.Stride * data.Height];
+			int kHeight = (int)Math.Floor(Math.Pow(matrix.Length, 0.5));
+
+			byte[] input = new byte[data.Stride * data.Height],
+				   output = new byte[data.Stride * data.Height];
 
 			Marshal.Copy(data.Scan0, input, 0, data.Stride * data.Height);
 
@@ -118,12 +119,15 @@ namespace FDB.Biometrics
 				{
 					int sum = 0;
 
-					for (int k = 0; k < 9; k++)
-						sum += input[(i - 1 + (k % 3)) * bytesPerPixel + (j - 1 + (k / 3)) * data.Stride] * matrix[k];
+					for (int k = 0; k < matrix.Length; k++)
+						sum += input[
+							  (i - 1 + (k % kHeight)) * bytesPerPixel
+							+ (j - 1 + (k / kHeight)) * data.Stride
+						] * matrix[k];
 
 					sum = sum > 128 ? 255 : 0;
 
-					output[j * data.Stride + i * bytesPerPixel + 0] =
+					output[j * data.Stride + i * bytesPerPixel] =
 						output[j * data.Stride + i * bytesPerPixel + 1] =
 						output[j * data.Stride + i * bytesPerPixel + 2] = (byte)sum;
 				}
