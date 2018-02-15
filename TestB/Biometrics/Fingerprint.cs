@@ -34,6 +34,6 @@ namespace FDB.Biometrics
 
 		public static bool operator!=(Fingerprint l, Fingerprint r) => !(l == r);
 
-		private DPUruNet.Fid Fid;
+		private Fid Fid;
 	}
 }

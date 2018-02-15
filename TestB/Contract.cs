@@ -4,14 +4,15 @@ namespace FDB
 {
 	public static class Contract
 	{
-		public static void Requires<TException>(bool condition, string name = null, string optionalDescription = null)
+		public static bool Requires<TException>(bool condition, string name = null, string optionalDescription = null)
 			where TException : Exception, new()
 		{
 			if (!condition)
 				Requires<TException>(condition, name, new[] { optionalDescription });
+			return condition;
 		}
 
-		public static void Requires<TException>(bool condition, string name = null, params string[] optionalDescription)
+		public static bool Requires<TException>(bool condition, string name = null, params string[] optionalDescription)
 			where TException : Exception, new()
 		{
 			if (!condition)
@@ -33,6 +34,7 @@ namespace FDB
 				}
 				throw exception;
 			}
+			return condition;
 		}
 
 		public static void Assure(Action function)
@@ -62,6 +64,22 @@ namespace FDB
 			{
 				throw new UnhandledExceptionException(ex.Message);
 			}
+		}
+
+		public static bool Conditionally(Action action, params bool[] conditions)
+		{
+			foreach (var condition in conditions)
+				if (!condition)
+					return false;
+			action();
+			return true;
+		}
+
+		public static bool OnCondition(bool condition, Action action)
+		{
+			if (condition)
+				action();
+			return condition;
 		}
 
 		private static string Format(Exception exception, string name, string optional)

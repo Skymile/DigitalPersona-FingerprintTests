@@ -5,26 +5,35 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FDB.View"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-	
+        Title="MainWindow" Height="768" Width="1024">
+
 	<Grid>
-		<Menu>
-			<MenuItem Name="Debug" Width="128" Height="24" Header="_Debug">
-				<MenuItem Name="Image" Width="128" Height="24" Header="_Image">
-					<MenuItem Name="Capture"  Width="128" Height="24" Header="_Capture" Click="WindowButtonCapture_Click"/>
-					<MenuItem Name="Binarize" Width="128" Height="24" Header="_Binarize" Click="WindowButtonBinarize_Click"/>
-					<MenuItem Name="Refresh"  Width="128" Height="24" Header="_Refresh" Click="WindowButtonRefresh_Click"/>
-					<MenuItem Name="Verify"   Width="128" Height="24" Header="_Verify" Click="WindowButtonIdentify_Click"/>
-					<MenuItem Name="CaptureSet" Width="168" Height="24" Header="_Capture and set as default" Click="WindowButtonSet_Click"/>
+
+		<Menu HorizontalAlignment="Stretch" VerticalAlignment="Top">
+			<MenuItem x:Name="Debug" Width="128" Height="24" Header="_Debug">
+				<MenuItem x:Name="Image" Width="128" Height="24" Header="_Image">
+					<MenuItem x:Name="Capture"  Width="128" Height="24" Header="_Capture" Click="WindowButtonCapture_Click"/>
+					<MenuItem x:Name="Binarize" Width="128" Height="24" Header="_Binarize" Click="WindowButtonBinarize_Click"/>
+					<MenuItem x:Name="Refresh"  Width="128" Height="24" Header="_Refresh" Click="WindowButtonRefresh_Click"/>
+					<MenuItem x:Name="Verify"   Width="128" Height="24" Header="_Verify" Click="WindowButtonIdentify_Click"/>
+					<MenuItem x:Name="CaptureSet" Width="168" Height="24" Header="_Capture and set as default" Click="WindowButtonSet_Click"/>
 				</MenuItem>
-				<MenuItem Name="TCP" Width="128" Height="24" Header="_TCP">
-					<MenuItem Name="Listen" Width="128" Height="24" Header="_Listen" Click="WindowButtonListen_Click"/>
-					<MenuItem Name="Stop" Width="128" Height="24" Header="_Stop" Click="WindowButtonStop_Click"/>
+				<MenuItem x:Name="TCP" Width="128" Height="24" Header="_TCP">
+					<MenuItem x:Name="Listen" Width="128" Height="24" Header="_Listen" Click="WindowButtonListen_Click"/>
 				</MenuItem>
 			</MenuItem>
 		</Menu>
-		
-		<Image x:Name="WindowImage" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
-		<Label Name="WindowLabelMatching" HorizontalAlignment="Left" Height="30" Margin="10,264,0,0" VerticalAlignment="Top" Width="163"/>
+
+		<Button x:Name="WindowButtonLogin" Content="Login" Margin="346,631,567,69" Click="WindowButtonLogin_Click"/>
+		<Button x:Name="WindowButtonRegister" Content="Register" Margin="489,631,425,69" Click="WindowButtonRegister_Click"/>
+
+
+		<Image x:Name="WindowImage" HorizontalAlignment="Center" VerticalAlignment="Center" Width="428" Height="316" Margin="132,78,456,343"/>
+		<Label x:Name="WindowLabelMatching" HorizontalAlignment="Left" Height="30" Margin="65,607,0,0" VerticalAlignment="Top" Width="163"/>
+
+
+
+
+
 	</Grid>
 </Window>

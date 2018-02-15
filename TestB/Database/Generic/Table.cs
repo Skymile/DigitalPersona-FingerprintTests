@@ -12,7 +12,6 @@ namespace FDB.Database
 		where TElement : IElement
 		where TDescription : class, IComparable<TDescription>, IFormattable, new()
 	{
-
 		public Table(IDictionary<TKey, TRecord> table = null, bool isEncrypted = false)
 		{
 			this.DataTable = table;
@@ -123,16 +122,6 @@ namespace FDB.Database
 
 		public IDictionary<TKey, TRecord> GetTable() => this.DataTable;
 
-		public IEnumerator<TRecord> GetEnumerator()
-		{
-			throw new NotImplementedException();
-		}
-
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			throw new NotImplementedException();
-		}
-
 		public Flags.Status Add(TRecord record) => Add(GetNextKey(), record);
 
 		public Flags.Status Add(TKey key, TRecord record)
@@ -166,6 +155,16 @@ namespace FDB.Database
 		}
 
 		public TKey GetNextKey()
+		{
+			throw new NotImplementedException();
+		}
+
+		public bool Find<TSeeker>(TSeeker seek, Func<TSeeker, TRecord, bool> comparer)
+		{
+			throw new NotImplementedException();
+		}
+
+		public ICollection<TRecord> Find<TSeeker>(TSeeker seek, Func<TSeeker, TRecord, TRecord> comparer)
 		{
 			throw new NotImplementedException();
 		}

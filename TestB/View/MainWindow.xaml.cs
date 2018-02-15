@@ -8,6 +8,9 @@ using System.Windows;
 
 using FDB.Biometrics;
 using FDB.Networking;
+using FDB.Networking.Log;
+using FDB.Networking.Users;
+using FDB.ViewModel;
 
 namespace FDB.View
 {
@@ -19,23 +22,10 @@ namespace FDB.View
 		public MainWindow()
 		{
 			InitializeComponent();
-			try
-			{
-				scanner = new FingerprintScanner();
-			}
-			catch (TypeInitializationException)
-			{
-				throw;
-			}
-
 			WindowLabelMatching.Content = "Init";
 		}
 
-		private void WindowButtonCapture_Click(object sender, RoutedEventArgs e)
-		{
-			WindowImageSource = scanner.CaptureBitmap(0);
-			WindowImage.Source = WindowImageSource.GetSource();
-		}
+		private void WindowButtonCapture_Click(object sender, RoutedEventArgs e) => mainModel.FingerprintCapture(ref WindowImage, ref WindowImageSource);
 
 		private void WindowButtonBinarize_Click(object sender, RoutedEventArgs e)
 		{
@@ -51,20 +41,20 @@ namespace FDB.View
 		private void WindowButtonRefresh_Click(object sender, RoutedEventArgs e) =>
 			WindowImage.Source = WindowImageSource.GetSource();
 
-		private void WindowButtonIdentify_Click(object sender, RoutedEventArgs e) =>
-			WindowLabelMatching.Content = (scanner.CaptureFingerprintData() == MainFingerprint).ToString();
+		private void WindowButtonIdentify_Click(object sender, RoutedEventArgs e) => mainModel.Verify(ref WindowLabelMatching);
 
-		private void WindowButtonSet_Click(object sender, RoutedEventArgs e) =>
-			MainFingerprint = scanner.CaptureFingerprintData();
+		private void WindowButtonSet_Click(object sender, RoutedEventArgs e) => mainModel.Set();
 
-		private void WindowButtonListen_Click(object sender, RoutedEventArgs e) => 
-			server.Listen(WindowLabelMatching);
+		private void WindowButtonListen_Click(object sender, RoutedEventArgs e) => mainModel.Listen(ref WindowLabelMatching);
+
+		private void WindowButtonLogin_Click(object sender, RoutedEventArgs e) => mainModel.Login();
+
+		private void WindowButtonRegister_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
 
 		private Bitmap WindowImageSource = null;
-
-		private Fingerprint MainFingerprint;
-		private FingerprintScanner scanner;
-
-		private TcpServer server;
+		private MainModel mainModel = new MainModel();
 	}
 }

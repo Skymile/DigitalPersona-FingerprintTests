@@ -1,8 +1,9 @@
 ﻿using System;
 
 using FDB.Database.Interface;
+using FDB.Networking.Users;
 
-namespace FDB.Networking
+namespace FDB.Networking.Log
 {
 	public struct LogItem : IElement
 	{

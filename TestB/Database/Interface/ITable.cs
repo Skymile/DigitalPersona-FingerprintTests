@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace FDB.Database.Interface
 {
-	public interface ITable<TRecord, TKey, TElement, TDescription> : IEnumerable<TRecord>
+	public interface ITable<TRecord, TKey, TElement, TDescription>
 		where TRecord : IRecord<TElement, TDescription>
 		where TKey : struct, IComparable<TKey>, IEquatable<TKey>
 		where TElement : IElement
@@ -23,6 +23,10 @@ namespace FDB.Database.Interface
 
 		Flags.Status Remove(TRecord record);
 		Flags.Status Remove(TKey record);
+
+		bool Find<TSeeker>(TSeeker seek, Func<TSeeker, TRecord, bool> comparer);
+
+		ICollection<TRecord> Find<TSeeker>(TSeeker seek, Func<TSeeker, TRecord, TRecord> comparer);
 
 		ITable<TRecord, TKey, TElement, TDescription> Select(Predicate<TRecord> predicate);
 		ICollection<TSelect> Select<TSelect>(Func<Predicate<TRecord>, TSelect> func);

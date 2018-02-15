@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FDB</RootNamespace>
     <AssemblyName>FDB</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -95,6 +95,7 @@
     <Compile Include="Biometrics\Fingerprint.cs" />
     <Compile Include="Contract.cs" />
     <Compile Include="Biometrics\FingerprintScanner.cs" />
+    <Compile Include="Database\Generic\ShortDescription.cs" />
     <Compile Include="Database\Generic\Description.cs" />
     <Compile Include="Database\Interface\Flags.cs" />
     <Compile Include="Database\Interface\IElement.cs" />
@@ -102,25 +103,49 @@
     <Compile Include="Database\Interface\ITable.cs" />
     <Compile Include="Database\Generic\Record.cs" />
     <Compile Include="Database\Generic\Table.cs" />
-    <Compile Include="Networking\Logger.cs" />
-    <Compile Include="Networking\LogItem.cs" />
+    <Compile Include="Networking\Log\Logger.cs" />
+    <Compile Include="Networking\Log\LogItem.cs" />
     <Compile Include="Networking\TcpServer.cs" />
     <Compile Include="Biometrics\Extensions.cs" />
-    <Compile Include="Networking\User.cs" />
+    <Compile Include="Networking\Users\User.cs" />
+    <Compile Include="Networking\Users\Userbase.cs" />
     <Compile Include="UnhandledExceptionException.cs" />
+    <Compile Include="View\Message.xaml.cs">
+      <DependentUpon>Message.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\RegisterWindow.xaml.cs">
+      <DependentUpon>RegisterWindow.xaml</DependentUpon>
+    </Compile>
+    <Page Include="View\LoginWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="Extensions.cs" />
+    <Compile Include="ViewModel\MainModel.cs" />
     <Compile Include="View\App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="View\DeviceNotFoundException.cs" />
+    <Compile Include="View\LoginWindow.xaml.cs">
+      <DependentUpon>LoginWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\Message.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\RegisterWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
