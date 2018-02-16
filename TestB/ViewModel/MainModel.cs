@@ -30,8 +30,6 @@ namespace FDB.ViewModel
 			{ // No scanner found, plug in device
 				throw;
 			}
-
-			this.register = new View.RegisterWindow(ref userbase, scanner);
 		}
 
 		public void FingerprintCapture(ref WindowControls.Image image, ref Bitmap imageBitmap)
@@ -62,8 +60,11 @@ namespace FDB.ViewModel
 			}
 		}
 
-		public void Register() => register.ShowDialog();
-
+		public void Register()
+		{
+			register = new View.RegisterWindow(ref userbase, scanner);
+			register.ShowDialog();
+		}
 		private View.Message message = new View.Message("You have to register first.");
 		private View.Message success = new View.Message("Success");
 
