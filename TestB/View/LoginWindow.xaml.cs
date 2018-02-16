@@ -52,7 +52,7 @@ namespace FDB.View
 		private const string ErrorFingerprintInvalid = "Fingerprint needed";
 		private const string UsernameIncorrect = "Incorrect login";
 
-		private bool UsernameExists(TextBox box) => this._Userbase.Find(box.Text, (i, j) => j.GetElement().Username.CompareTo(i) == 0);
+		private bool UsernameExists(TextBox box) => this._Userbase.Find(i => i.GetElement().Username.CompareTo(box.Text) == 0).Count != 0;
 
 		private void WindowButtonCapture_Click(object sender, RoutedEventArgs e) =>
 			this._Fingerprint = _Scanner.CaptureFingerprintData();

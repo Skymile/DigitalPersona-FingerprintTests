@@ -2,14 +2,16 @@
 
 namespace FDB.Database.Interface
 {
-	public interface IRecord<TElement, TDescription>
-		where TElement : IElement
-		where TDescription : class, IComparable<TDescription>, IFormattable, new()
+	public interface IRecord<TElement, TMeta>
+		where TElement : class, IElement<TElement>, IComparable<TElement>
+		where TMeta : class, IComparable<TMeta>, IFormattable, new()
 	{
-		TDescription GetDescription();
+		TMeta GetMeta();
 
 		TElement GetElement();
 
-		bool Update(TDescription description);
+		IRecord<TElement, TMeta> Update(TMeta meta);
+
+		IRecord<TElement, TMeta> Modify(Func<IRecord<TElement, TMeta>, IRecord<TElement, TMeta>> modify);
 	}
 }

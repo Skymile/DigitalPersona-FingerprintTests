@@ -3,44 +3,47 @@ using System.Collections.Generic;
 
 namespace FDB.Database.Interface
 {
-	public interface ITable<TRecord, TKey, TElement, TDescription>
-		where TRecord : IRecord<TElement, TDescription>
-		where TKey : struct, IComparable<TKey>, IEquatable<TKey>
-		where TElement : IElement
-		where TDescription : class, IComparable<TDescription>, IFormattable, new()
+	public interface ITable<TKey, TElement, TMeta>
+		where TKey     : struct, IKey<TKey>, IComparable<TKey>, IEquatable<TKey>
+		where TElement : class,  IElement<TElement>, IComparable<TElement>
+		where TMeta    : class,  IComparable<TMeta>, IFormattable, new()
 	{
-		TRecord this[TKey key] { get; }
-		ICollection<TRecord> this[params TKey[] key] { get; }
+		IRecord<TElement, TMeta> this[TKey key] { get; }
+		IRecord<TElement, TMeta> Find(TElement element);
+		IRecord<TElement, TMeta> Find(TMeta meta);
 
-		TRecord this[TDescription key] { get; }
-		ICollection<TRecord> this[params TDescription[] key] { get; }
+		ICollection<IRecord<TElement, TMeta>> this[params TKey[] key] { get; }
+		ICollection<IRecord<TElement, TMeta>> Find(params TElement[] element);
+		ICollection<IRecord<TElement, TMeta>> Find(params TMeta[] meta);
+		ICollection<IRecord<TElement, TMeta>> Find(Predicate<IRecord<TElement, TMeta>> predicate);
+		ICollection<IRecord<TElement, TMeta>> Find<TSeeker>(TSeeker seek, Func<TSeeker, IRecord<TElement, TMeta>, IRecord<TElement, TMeta>> comparer);
 
-		TRecord this[TElement key] { get; }
-		ICollection<TRecord> this[params TElement[] key] { get; }
+		Flags.Status Add(TKey key, IRecord<TElement, TMeta> record);
+		Flags.Status Add(TKey key, TElement element, TMeta meta = null);
+		Flags.Status Add(TElement element, TMeta meta = null);
+		Flags.Status Add(IRecord<TElement, TMeta> record);
 
-		Flags.Status Add(TKey key, TRecord record);
-		Flags.Status Add(TRecord record);
+		Flags.Status Remove(TKey key);
+		Flags.Status Remove(TElement element, int count = 1);
+		Flags.Status Remove(TMeta meta, int count = 1);
+		Flags.Status Remove(IRecord<TElement, TMeta> record, int count = 1);
+		Flags.Status Remove<TRemove>(TRemove remove, Func<TRemove, IRecord<TElement, TMeta>, bool> func, int count = 1);
 
-		Flags.Status Remove(TRecord record);
-		Flags.Status Remove(TKey record);
+		ICollection<IRecord<TSelect, TMeta>> Select<TSelect>(Func<IRecord<TElement, TMeta>, TSelect> selection)
+			where TSelect : class, IElement<TSelect>, IComparable<TSelect>;
 
-		bool Find<TSeeker>(TSeeker seek, Func<TSeeker, TRecord, bool> comparer);
+		ICollection<IRecord<TElement, TMeta>> Where(Predicate<IRecord<TElement, TMeta>> predicate);
 
-		ICollection<TRecord> Find<TSeeker>(TSeeker seek, Func<TSeeker, TRecord, TRecord> comparer);
+		ITable<TKey, TElement, TMeta> Join(ITable<TKey, TElement, TMeta> other, Predicate<IRecord<TElement, TMeta>> predicate);
 
-		ITable<TRecord, TKey, TElement, TDescription> Select(Predicate<TRecord> predicate);
-		ICollection<TSelect> Select<TSelect>(Func<Predicate<TRecord>, TSelect> func);
+		ITable<TKey, TElement, TMeta> Split(TKey startIndex, TKey endIndex);
 
-		ITable<TRecord, TKey, TElement, TDescription> Where(Predicate<TRecord> predicate);
+		ITable<TKey, TElement, TMeta> ForEach(Action<IRecord<TElement, TMeta>> action);
 
-		ITable<TRecord, TKey, TElement, TDescription> Join(ITable<TRecord, TKey, TElement, TDescription> other);
+		ITable<TKey, TElement, TMeta> Cartesian(ITable<TKey, TElement, TMeta> other, Func<IRecord<TElement, TMeta>, IRecord<TElement, TMeta>> func);
 
-		ITable<TRecord, TKey, TElement, TDescription> Split(TKey startIndex, TKey endIndex);
+		IDictionary<TKey, IRecord<TElement, TMeta>> GetTable();
 
 		int? GetLength();
-		int? GetSize();
-
-		IDictionary<TKey, TRecord> GetTable();
-		TKey GetNextKey();
 	}
 }

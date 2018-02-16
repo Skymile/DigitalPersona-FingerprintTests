@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using FDB.Biometrics;
 using FDB.Database;
+using FDB.Database.Generic;
 using FDB.Networking.Users;
 
 namespace FDB.View
@@ -71,7 +72,7 @@ namespace FDB.View
 
 		private void ValidRegister()
 		{
-			this._Userbase.Add(new Record<int, User, ShortDescription<string>>(
+			this._Userbase.Add(new Record<Database.Generic.Key, User, ShortDescription<string>>(
 					0, new User(
 					this.WindowBoxRegisterUsername.Text,
 					this.WindowBoxRegisterPassword.Text,
@@ -85,7 +86,7 @@ namespace FDB.View
 		private bool IsPasswordNull => this.WindowBoxRegisterPassword.Text == null;
 		private bool IsFingerprintNull => this._TempFingerprint == null;
 
-		private bool UsernameExists(TextBox box) => this._Userbase.Find(box.Text, (i, j) => j.GetElement().Username.CompareTo(i) == 0);
+		private bool UsernameExists(TextBox box) => this._Userbase.Find(i => i.GetElement().Username.CompareTo(box.Text) == 0).Count != 0;
 
 		private const string ErrorUsernameInvalid = "Type in valid username";
 		private const string ErrorPasswordInvalid = "Type in valid password";

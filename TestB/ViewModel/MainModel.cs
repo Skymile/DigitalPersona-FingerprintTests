@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 
 using WindowControls = System.Windows.Controls;
 
@@ -11,12 +8,12 @@ using FDB.Biometrics;
 using FDB.Networking;
 using FDB.Networking.Log;
 using FDB.Networking.Users;
-using FDB.ViewModel;
-using FDB.Database;
+using FDB.Database.Interface;
+using FDB.Database.Generic;
 
 namespace FDB.ViewModel
 {
-	using UserbaseDatatable = SortedDictionary<int, Record<int, User, ShortDescription<string>>>;
+	using UserbaseTable = SortedDictionary<Key, IRecord<User, ShortDescription<string>>>;
 
 	public class MainModel
 	{
@@ -24,7 +21,7 @@ namespace FDB.ViewModel
 		{
 			try
 			{
-				scanner = new FingerprintScanner();
+				this.scanner = new FingerprintScanner();
 			}
 			catch (TypeInitializationException)
 			{ // No scanner found, plug in device
@@ -41,7 +38,7 @@ namespace FDB.ViewModel
 		public void Set() => 
 			MainFingerprint = scanner.CaptureFingerprintData();
 
-		public void Listen(ref WindowControls.Label label) => server.ListenAsync(label);
+		public void Listen(ref WindowControls.Label label) => this.server.ListenAsync(label);
 
 		public void Verify(ref WindowControls.Label label) => 
 			label.Content = (scanner.CaptureFingerprintData() == MainFingerprint).ToString();
@@ -76,6 +73,6 @@ namespace FDB.ViewModel
 
 		private TcpServer server = new TcpServer();
 		private Logger logger = new Logger();
-		private Userbase userbase = new Userbase(new UserbaseDatatable());
+		private Userbase userbase = new Userbase(new UserbaseTable());
 	}
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FDB.Database
+namespace FDB.Database.Generic
 {
 	public class Description<TText> : IComparable<Description<TText>>, IFormattable
 		where TText : class, IComparable<TText>

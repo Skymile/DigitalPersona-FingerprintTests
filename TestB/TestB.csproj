@@ -41,7 +41,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <LangVersion>6</LangVersion>
+    <LangVersion>7.2</LangVersion>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -99,14 +99,16 @@
     <Compile Include="Database\Generic\Description.cs" />
     <Compile Include="Database\Interface\Flags.cs" />
     <Compile Include="Database\Interface\IElement.cs" />
+    <Compile Include="Database\Interface\IKey.cs" />
     <Compile Include="Database\Interface\IRecord.cs" />
     <Compile Include="Database\Interface\ITable.cs" />
     <Compile Include="Database\Generic\Record.cs" />
     <Compile Include="Database\Generic\Table.cs" />
+    <Compile Include="Database\Generic\Key.cs" />
     <Compile Include="Networking\Log\Logger.cs" />
     <Compile Include="Networking\Log\LogItem.cs" />
     <Compile Include="Networking\TcpServer.cs" />
-    <Compile Include="Biometrics\Extensions.cs" />
+    <Compile Include="Biometrics\BitmapExtensions.cs" />
     <Compile Include="Networking\Users\User.cs" />
     <Compile Include="Networking\Users\Userbase.cs" />
     <Compile Include="UnhandledExceptionException.cs" />

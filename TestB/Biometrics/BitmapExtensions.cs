@@ -1,9 +1,9 @@
 ﻿using DPUruNet;
+
 using System;
 using System.Drawing;
 using DrawImg = System.Drawing.Imaging;
 using System.Runtime.InteropServices;
-
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
@@ -11,7 +11,10 @@ using System.Windows.Media.Imaging;
 
 namespace FDB.Biometrics
 {
-	public static partial class Extensions
+	/// <summary>
+	///		Extension methods for <see cref="Bitmap"/> class
+	/// </summary>
+	public static partial class BitmapExtensions
 	{
 		/// <summary>
 		///		Converts <see cref="Fid.Fiv"/> instance into new instance of <see cref="Bitmap"/> class. 

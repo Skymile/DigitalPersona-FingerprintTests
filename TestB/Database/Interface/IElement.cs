@@ -1,7 +1,6 @@
 ﻿namespace FDB.Database.Interface
 {
-    public interface IElement
+    public interface IElement<TElement>
 	{
-		int GetSize();
 	}
 }
