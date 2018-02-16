@@ -1,4 +1,5 @@
-﻿
+﻿using System;
+
 using DPUruNet;
 using static DPUruNet.Constants;
 
@@ -20,19 +21,16 @@ namespace FDB.Biometrics
 
 		public override int GetHashCode() => base.GetHashCode();
 
-		/// <summary>
-		///		Checks whether instances are the same by value. (dissimilarity score)
-		/// </summary>
-		/// <param name="l"></param>
-		/// <param name="r"></param>
-		/// <returns></returns>
-		public static bool operator==(Fingerprint l, Fingerprint r) =>
-			Comparison.Compare(
-				FeatureExtraction.CreateFmdFromFid(l.Fid, Formats.Fmd.ANSI).Data, 0, 
-				FeatureExtraction.CreateFmdFromFid(r.Fid, Formats.Fmd.ANSI).Data, 0
-			).ResultCode.HasFlag(ResultCode.DP_SUCCESS);
+		public int CompareFmd(Fingerprint other)
+		{
+			if (other == null)
+				return 999999;
 
-		public static bool operator!=(Fingerprint l, Fingerprint r) => !(l == r);
+			return Comparison.Compare(
+				FeatureExtraction.CreateFmdFromFid(this.Fid, Formats.Fmd.ANSI).Data, 0,
+				FeatureExtraction.CreateFmdFromFid(other.Fid, Formats.Fmd.ANSI).Data, 0
+			).Score;
+		}
 
 		private Fid Fid;
 	}

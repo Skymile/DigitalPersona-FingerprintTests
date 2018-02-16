@@ -9,7 +9,6 @@
     <Grid>
 		<TextBox x:Name="WindowBoxRegisterUsername" HorizontalAlignment="Left" Height="24" Margin="73,20,0,0"  TextWrapping="Wrap" Text="Username" VerticalAlignment="Top" Width="150"/>
 		<TextBox x:Name="WindowBoxRegisterPassword" HorizontalAlignment="Left" Height="24" Margin="73,57,0,0" TextWrapping="Wrap" Text="Password" VerticalAlignment="Top" Width="150"/>
-		<TextBox x:Name="WindowBoxRegisterAddress" HorizontalAlignment="Left" Height="24" Margin="73,95,0,0" TextWrapping="Wrap" Text="Address" VerticalAlignment="Top" Width="150"/>
 		<Button x:Name="WindowButtonCapture" Content="Capture Fingerprint" HorizontalAlignment="Left" Height="24" Margin="73,133,0,0" VerticalAlignment="Top" Width="150" Click="WindowButtonCapture_Click"/>
 		
 		<Button x:Name="WindowButtonRegister" Content="Register" HorizontalAlignment="Left" Height="24" Margin="112,182,0,0" VerticalAlignment="Top" Width="64" Click="WindowButtonRegister_Click"/>

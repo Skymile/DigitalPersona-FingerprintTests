@@ -49,12 +49,17 @@ namespace FDB.View
 
 		private void WindowButtonLogin_Click(object sender, RoutedEventArgs e) => mainModel.Login();
 
-		private void WindowButtonRegister_Click(object sender, RoutedEventArgs e)
-		{
+		private void WindowButtonRegister_Click(object sender, RoutedEventArgs e) => mainModel.Register();
 
-		}
+		private User CurrentUser = User.Guest;
 
 		private Bitmap WindowImageSource = null;
 		private MainModel mainModel = new MainModel();
+
+		private void WindowSend_Click(object sender, RoutedEventArgs e)
+		{
+			SendWindow send = new SendWindow();
+			send.ShowDialog();
+		}
 	}
 }
