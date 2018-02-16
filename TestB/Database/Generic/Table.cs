@@ -67,13 +67,7 @@ namespace FDB.Database
 			}
 		}
 
-		public ICollection<TRecord> this[params TKey[] keys]
-		{
-			get
-			{
-				return keys.Select(i => this.DataTable[i]).ToList();
-			}
-		}
+		public ICollection<TRecord> this[params TKey[] keys] => keys.Select(i => this.DataTable[i]).ToList();
 
 		public TRecord this[TKey key]
 		{

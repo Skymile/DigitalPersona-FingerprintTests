@@ -28,5 +28,15 @@ namespace FDB.View
 		{
 
 		}
+
+
+		private const string ErrorUsernameInvalid = "Type in valid username";
+		private const string ErrorPasswordInvalid = "Type in valid password";
+		private const string ErrorFingerprintInvalid = "Fingerprint needed";
+
+		private void WindowButtonCapture_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
 	}
 }
