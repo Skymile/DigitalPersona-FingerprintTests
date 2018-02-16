@@ -6,10 +6,14 @@
         xmlns:local="clr-namespace:FDB.View"
         mc:Ignorable="d"
         Title="LoginWindow" Height="300" Width="300">
-    <Grid>
-		<TextBox x:Name="WindowBoxLoginUsername" HorizontalAlignment="Left" Height="24" Margin="73,80,0,0"  TextWrapping="Wrap" Text="Username" VerticalAlignment="Top" Width="150"/>
-		<TextBox x:Name="WindowBoxLoginPassword" HorizontalAlignment="Left" Height="24" Margin="73,225,0,0" TextWrapping="Wrap" Text="Password" VerticalAlignment="Top" Width="150"/>
+	<Grid>
+		<TextBox x:Name="WindowBoxLoginUsername" HorizontalAlignment="Left" Height="24" Margin="73,22,0,0"  TextWrapping="Wrap" Text="Username" VerticalAlignment="Top" Width="150"/>
+		<TextBox x:Name="WindowBoxLoginPassword" HorizontalAlignment="Left" Height="24" Margin="73,134,0,0" TextWrapping="Wrap" Text="Type password" VerticalAlignment="Top" Width="150"/>
 		<Button x:Name="WindowButtonLogin" Content="Login" HorizontalAlignment="Left" Height="24" Margin="112,182,0,0" VerticalAlignment="Top" Width="64" Click="WindowButtonLogin_Click"/>
-		<Button x:Name="WindowButtonCapture" Content="Capture fingerprint" HorizontalAlignment="Left" Margin="81,128,0,0" VerticalAlignment="Top" Width="134" Height="24" Click="WindowButtonCapture_Click"/>
+		<Button x:Name="WindowButtonCapture" Content="Capture fingerprint" HorizontalAlignment="Left" Margin="81,76,0,0" VerticalAlignment="Top" Width="134" Height="24" Click="WindowButtonCapture_Click"/>
+
+		<Label x:Name="WindowErrorLabel" Content="" HorizontalAlignment="Left" Margin="64,227,0,0" VerticalAlignment="Top" Width="175"/>
+		<Label x:Name="WindowLabelOr" Content="Or" HorizontalAlignment="Left" Height="24" Margin="136,105,0,0" VerticalAlignment="Top" Width="30"/>
+
 	</Grid>
 </Window>

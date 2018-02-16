@@ -21,5 +21,7 @@ namespace FDB.Networking.Users
 		{
 			throw new NotImplementedException();
 		}
+
+		public static User Guest => new User("Guest", "", null);
 	}
 }

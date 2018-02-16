@@ -150,12 +150,17 @@ namespace FDB.Database
 
 		public TKey GetNextKey()
 		{
-			throw new NotImplementedException();
+			return new TKey();
 		}
 
 		public bool Find<TSeeker>(TSeeker seek, Func<TSeeker, TRecord, bool> comparer)
 		{
-			throw new NotImplementedException();
+			if (DataTable == null)
+				return false;
+			foreach (var i in DataTable)
+				if (comparer(seek, i.Value))
+					return true;
+			return false;
 		}
 
 		public ICollection<TRecord> Find<TSeeker>(TSeeker seek, Func<TSeeker, TRecord, TRecord> comparer)
