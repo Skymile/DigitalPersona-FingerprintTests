@@ -1,29 +1,49 @@
-﻿using System.Net;
+﻿using System;
+using System.IO;
+using System.Net;
 using System.Net.Sockets;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 
 namespace FDB.Networking
 {
 	class TcpServer
 	{
-		public TcpServer Listen(Label notify)
+        private bool isListening = false;
+
+        public void Stop()
+        {
+            isListening = false;
+            listener.Stop();
+        }
+
+		public async Task<TcpServer> ListenAsync(Label notify)
 		{
+            isListening = true;
 			listener.Start();
-			byte[] bytes = new byte[256];
-			for (int cycles = 0; cycles < 1024; ++cycles)
-			{
-				TcpClient other = listener.AcceptTcpClient();
-				NetworkStream stream = other.GetStream();
 
-				if (stream.Read(bytes, 0, 256) != 0)
-					notify.Content = stream.DataAvailable.ToString();
-				else
-					notify.Content = "No Connection";
+            while (isListening)
+            {
+                var other = await listener.AcceptTcpClientAsync();
 
-				other.Close();
-			}
-			listener.Stop();
-			notify.Content += "; Server stopped";
+                var reader = new BinaryReader(other.GetStream());
+                var writer = new BinaryWriter(other.GetStream());
+
+                var urlLen = (int)BitConverter.ToUInt32(reader.ReadBytes(4), 0);
+                var url = Encoding.UTF8.GetString(reader.ReadBytes(urlLen));
+
+                var username = "pawel";
+                var password = "tajnehaslo";                
+
+                writer.Write(username.Length);
+                writer.Write(password.Length);
+                writer.Write(Encoding.UTF8.GetBytes(username));
+                writer.Write(Encoding.UTF8.GetBytes(password));
+
+                notify.Content += "; Server stopped";
+            }
+
 			return this;
 		}
 

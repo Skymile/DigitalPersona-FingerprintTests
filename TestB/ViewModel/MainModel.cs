@@ -38,7 +38,7 @@ namespace FDB.ViewModel
 		public void Set() => 
 			MainFingerprint = scanner.CaptureFingerprintData();
 
-		public void Listen(ref WindowControls.Label label) => server.Listen(label);
+		public void Listen(ref WindowControls.Label label) => server.ListenAsync(label);
 
 		public void Verify(ref WindowControls.Label label) => 
 			label.Content = (scanner.CaptureFingerprintData() == MainFingerprint).ToString();
