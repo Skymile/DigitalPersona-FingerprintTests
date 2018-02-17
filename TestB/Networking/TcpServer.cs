@@ -8,16 +8,29 @@ using System.Windows.Controls;
 
 namespace FDB.Networking
 {
-	class TcpServer
+	/// <summary>
+	///		A networking class used to communicate with application's web part.
+	/// </summary>
+	/// 
+	public class TcpServer
 	{
         private bool isListening = false;
 
-        public void Stop()
+		/// <summary>
+		///		Stops the listening.
+		/// </summary>
+		/// 
+		public void Stop()
         {
             isListening = false;
             listener.Stop();
         }
 
+		/// <summary>
+		///		Asynchronous listening.
+		/// </summary>
+		/// <param name="notify">The notify label.</param>
+		/// 
 		public async Task<TcpServer> ListenAsync(Label notify)
 		{
             isListening = true;
@@ -48,7 +61,7 @@ namespace FDB.Networking
 					writer.Write(Encoding.UTF8.GetBytes(password));
 				}
 				else
-				{//tmp
+				{// tmp !DRY
 	                var other = await listener.AcceptTcpClientAsync();
 	
 	                var reader = new BinaryReader(other.GetStream());
@@ -76,8 +89,6 @@ namespace FDB.Networking
 		public TcpServer Send(string address, string password)
 		{
 			// TODO 
-
-
 			return this;
 		}
 

@@ -325,21 +325,53 @@ namespace FDB.Database.Generic
 			this._DataTable.Where(i => predicate(i.Value)).
 							Select(i => i.Value) as ICollection<IRecord<TElement, TMeta>>;
 
+		/// <summary>
+		///		Not implemented.
+		/// </summary>
+		/// <param name="other"></param>
+		/// <param name="predicate"></param>
+		/// <exception cref="NotImplementedException"></exception>
+		/// 
 		public ITable<TKey, TElement, TMeta> Join(ITable<TKey, TElement, TMeta> other, Predicate<IRecord<TElement, TMeta>> predicate) => 
 			throw new NotImplementedException();
 
+		/// <summary>
+		///		Not implemented.
+		/// </summary>
+		/// <param name="startIndex">The starting index.</param>
+		/// <param name="endIndex">The end index.</param>
+		/// <exception cref="NotImplementedException"></exception>
+		/// 
 		public ITable<TKey, TElement, TMeta> Split(TKey startIndex, TKey endIndex) => 
 			throw new NotImplementedException();
 
+		/// <summary>
+		///		Not implemented.
+		/// </summary>
+		/// <param name="action">The action.</param>
+		/// <exception cref="NotImplementedException"></exception>
+		/// 
 		public ITable<TKey, TElement, TMeta> ForEach(Action<IRecord<TElement, TMeta>> action) => 
 			throw new NotImplementedException();
 
+		/// <summary>
+		///		Not implemented.
+		/// </summary>
+		/// <param name="other">The other.</param>
+		/// <param name="func">The function.</param>
+		/// <exception cref="NotImplementedException"></exception>
+		/// 
 		public ITable<TKey, TElement, TMeta> Cartesian(
 			ITable<TKey, TElement, TMeta> other, 
 			Func<IRecord<TElement, TMeta>, IRecord<TElement, TMeta>> func
 		) => 
 			throw new NotImplementedException();
 
+		/// <summary>
+		///		Not implemented.
+		/// </summary>
+		/// <exception cref="NotImplementedException"></exception>
+		/// 
 		public IDictionary<TKey, IRecord<TElement, TMeta>> GetTable() => 
 			throw new NotImplementedException();
 

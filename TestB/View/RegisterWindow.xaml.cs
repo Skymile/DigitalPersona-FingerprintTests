@@ -1,18 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+
 using FDB.Biometrics;
-using FDB.Database;
 using FDB.Database.Generic;
 using FDB.Networking.Users;
 
@@ -23,11 +12,18 @@ namespace FDB.View
 	/// </summary>
 	public partial class RegisterWindow : Window
 	{
-		public RegisterWindow()
-		{
-			InitializeComponent();
-		}
+		/// <summary>
+		/// Initializes a new instance of the <see cref="RegisterWindow"/> class.
+		/// </summary>
+		/// 
+		public RegisterWindow() => InitializeComponent();
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="RegisterWindow"/> class.
+		/// </summary>
+		/// <param name="userbase">The userbase.</param>
+		/// <param name="scanner">The scanner.</param>
+		/// 
 		public RegisterWindow(ref Userbase userbase, FingerprintScanner scanner)
 		{
 			InitializeComponent();
@@ -42,33 +38,32 @@ namespace FDB.View
 			//	Contract.OnCondition(IsFingerprintNull, () => WindowErrorLabel.Content = ErrorFingerprintInvalid) &&
 			//	Contract.OnCondition(UsernameExists(WindowBoxRegisterUsername), () => WindowErrorLabel.Content = ThisUsernameExists))
 
-			if (IsUsernameNull)
+			// Tmp something in contracts is funny
+			if (this.IsUsernameNull)
 			{
-				WindowErrorLabel.Content = ErrorUsernameInvalid;
+				this.WindowErrorLabel.Content = ErrorUsernameInvalid;
 				return;
 			}
-			if (IsPasswordNull)
+			if (this.IsPasswordNull)
 			{
-				WindowErrorLabel.Content = ErrorPasswordInvalid;
+				this.WindowErrorLabel.Content = ErrorPasswordInvalid;
 				return;
 			}
-			if (IsFingerprintNull)
+			if (this.IsFingerprintNull)
 			{
-				WindowErrorLabel.Content = ErrorFingerprintInvalid;
+				this.WindowErrorLabel.Content = ErrorFingerprintInvalid;
 				return;
 			}
 			if (UsernameExists(WindowBoxRegisterUsername))
 			{
-				WindowErrorLabel.Content = ThisUsernameExists;
+				this.WindowErrorLabel.Content = ThisUsernameExists;
 				return;
 			}
 			ValidRegister();
 		}
 
-		private void WindowButtonCapture_Click(object sender, RoutedEventArgs e)
-		{
+		private void WindowButtonCapture_Click(object sender, RoutedEventArgs e) => 
 			this._TempFingerprint = _Scanner.CaptureFingerprintData();
-		}
 
 		private void ValidRegister()
 		{
@@ -79,7 +74,7 @@ namespace FDB.View
 					this._TempFingerprint
 				)));
 
-			WindowErrorLabel.Content = "Success " + this._Userbase.GetLength();
+			this.WindowErrorLabel.Content = "Success " + this._Userbase.GetLength();
 		}
 
 		private bool IsUsernameNull => this.WindowBoxRegisterUsername.Text == null;

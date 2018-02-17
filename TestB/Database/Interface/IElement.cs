@@ -1,6 +1,11 @@
 ﻿namespace FDB.Database.Interface
 {
-    public interface IElement<TElement>
+	/// <summary>
+	///		Defines elements of given table.
+	/// </summary>
+	/// <typeparam name="TElement">The type of the element.</typeparam>
+	/// 
+	public interface IElement<TElement>
 	{
 	}
 }

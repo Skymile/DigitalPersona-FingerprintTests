@@ -3,6 +3,13 @@ using System.Collections.Generic;
 
 namespace FDB.Database.Interface
 {
+	/// <summary>
+	///		Defines the database's table.
+	/// </summary>
+	/// <typeparam name="TKey">The type of the key.</typeparam>
+	/// <typeparam name="TElement">The type of the element.</typeparam>
+	/// <typeparam name="TMeta">The type of the meta.</typeparam>
+	/// 
 	public interface ITable<TKey, TElement, TMeta>
 		where TKey     : struct, IKey<TKey>, IComparable<TKey>, IEquatable<TKey>
 		where TElement : class,  IElement<TElement>, IComparable<TElement>

@@ -1,14 +1,7 @@
-﻿using System;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Net;
-using System.Net.Sockets;
-using System.Runtime.InteropServices;
+﻿using System.Drawing;
 using System.Windows;
 
 using FDB.Biometrics;
-using FDB.Networking;
-using FDB.Networking.Log;
 using FDB.Networking.Users;
 using FDB.ViewModel;
 

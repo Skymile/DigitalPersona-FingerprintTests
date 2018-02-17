@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Threading.Tasks;
 
@@ -52,11 +51,40 @@ namespace FDB.Biometrics
 			return captureResult.Data.Views[0].ToBitmap();
 		}
 
+		/// <summary>
+		/// 	Captures the fingerprint data.
+		/// </summary>
+		/// <param name="index"> Index of <see cref="ReaderCollection"/> reader instance. By default set to 0. </param>
+		/// <param name="timeout"> Time after which scanner gives up, returns null if timed out. </param>
+		/// <returns>
+		///		Captured instance of <see cref="Bitmap"/> class.
+		/// </returns>
+		/// 
 		public Fingerprint CaptureFingerprintData(int index = 0, int timeout = -1)
 		{
 			CaptureResult captureResult = Capture(index);
 			return new Fingerprint(captureResult.Data);
 		}
+
+		/// <summary>
+		///		Gets the instance of <see cref="Reader"/> class.
+		/// </summary>
+		/// <param name="key"></param>
+		/// <returns></returns>
+		/// 
+		public Reader this[int key] => readerCollection[key];
+
+		/// <summary>
+		///		Gets the count of available readers.
+		/// </summary>
+		/// 
+		public static int Length => readerCollection.Count;
+
+		/// <summary>
+		///		Collection of fingerprint readers.
+		/// </summary>
+		/// 
+		private static ReaderCollection readerCollection;
 
 		private CaptureResult Capture(int index = 0, int timeout = -1)
 		{ // TODO Check and set configuration of indexes other than 0
@@ -89,24 +117,5 @@ namespace FDB.Biometrics
 			return captureResult;
 		}
 
-		/// <summary>
-		///		Gets the instance of <see cref="Reader"/> class.
-		/// </summary>
-		/// <param name="key"></param>
-		/// <returns></returns>
-		/// 
-		public Reader this[int key] => readerCollection[key];
-
-		/// <summary>
-		///		Gets the count of available readers.
-		/// </summary>
-		/// 
-		public static int Length => readerCollection.Count;
-
-		/// <summary>
-		///		Collection of fingerprint readers.
-		/// </summary>
-		/// 
-		private static ReaderCollection readerCollection;
 	}
 }

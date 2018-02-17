@@ -5,14 +5,15 @@ using FDB.Networking;
 namespace FDB.View
 {
 	/// <summary>
-	/// Interaction logic for SendWindow.xaml
+	///		Interaction logic for SendWindow.xaml
 	/// </summary>
 	public partial class SendWindow : Window
 	{
-		public SendWindow()
-		{
-			InitializeComponent();
-		}
+		/// <summary>
+		///		Initializes a new instance of the <see cref="SendWindow"/> class.
+		/// </summary>
+		/// 
+		public SendWindow() => InitializeComponent();
 
 		private TcpServer server = new TcpServer();
 
@@ -20,15 +21,15 @@ namespace FDB.View
 
 		private void WindowButtonSend_Click(object sender, RoutedEventArgs e)
 		{
-			WindowLabelInfo.Content = "Starting";
-			if (WindowLabelAddress.Text == null)
-				WindowLabelInfo.Content = "Invalid address detected";
-			else if (WindowLabelPassword.Text == null)
-				WindowLabelInfo.Content = "Invalid password detected";
+			this.WindowLabelInfo.Content = "Starting";
+			if (this.WindowLabelAddress.Text == null)
+				this.WindowLabelInfo.Content = "Invalid address detected";
+			else if (this.WindowLabelPassword.Text == null)
+				this.WindowLabelInfo.Content = "Invalid password detected";
 			else
 			{
-				server.Send(WindowLabelAddress.Text, WindowLabelPassword.Text);
-				WindowLabelInfo.Content = "Data send to TCP Server";
+				this.server.Send(this.WindowLabelAddress.Text, this.WindowLabelPassword.Text);
+				this.WindowLabelInfo.Content = "Data send to TCP Server";
 			}
 		}
 	}

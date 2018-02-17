@@ -25,7 +25,7 @@ namespace FDB.ViewModel
 			}
 			catch (TypeInitializationException)
 			{ // No scanner found, plug in device
-				throw;
+				throw new DeviceNotFoundException();
 			}
 		}
 
@@ -59,9 +59,10 @@ namespace FDB.ViewModel
 
 		public void Register()
 		{
-			register = new View.RegisterWindow(ref userbase, scanner);
-			register.ShowDialog();
+			this.register = new View.RegisterWindow(ref userbase, scanner);
+			this.register.ShowDialog();
 		}
+
 		private View.Message message = new View.Message("You have to register first.");
 		private View.Message success = new View.Message("Success");
 
