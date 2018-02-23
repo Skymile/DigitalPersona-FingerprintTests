@@ -15,7 +15,10 @@ namespace FDB.Biometrics
 		/// </summary>
 		/// <param name="fid">The Fingerprint Image Data.</param>
 		/// 
-		public Fingerprint(Fid fid) => this.Fid = fid;
+		public Fingerprint(Fid fid)
+		{
+			this.Fid = fid;
+		}
 
 		/// <summary>
 		///		Checks whether instances are the same by reference.

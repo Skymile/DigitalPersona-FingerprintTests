@@ -5,14 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FDB.View"
         mc:Ignorable="d"
-        Title="RegisterWindow" Height="300" Width="300">
-    <Grid>
-		<TextBox x:Name="WindowBoxRegisterUsername" HorizontalAlignment="Left" Height="24" Margin="73,20,0,0"  TextWrapping="Wrap" Text="Username" VerticalAlignment="Top" Width="150"/>
-		<TextBox x:Name="WindowBoxRegisterPassword" HorizontalAlignment="Left" Height="24" Margin="73,57,0,0" TextWrapping="Wrap" Text="Password" VerticalAlignment="Top" Width="150"/>
-		<Button x:Name="WindowButtonCapture" Content="Capture Fingerprint" HorizontalAlignment="Left" Height="24" Margin="73,133,0,0" VerticalAlignment="Top" Width="150" Click="WindowButtonCapture_Click"/>
-		
-		<Button x:Name="WindowButtonRegister" Content="Register" HorizontalAlignment="Left" Height="24" Margin="112,182,0,0" VerticalAlignment="Top" Width="64" Click="WindowButtonRegister_Click"/>
-		<Label x:Name="WindowErrorLabel" Content="" HorizontalAlignment="Left" Margin="64,227,0,0" VerticalAlignment="Top" Width="175"/>
+        Title="RegisterWindow" Height="275" Width="300">
+	<Grid>
+		<TextBox x:Name="WindowBoxRegisterUsername" HorizontalAlignment="Left" Height="24" Margin="26,19,0,0"  TextWrapping="Wrap" Text="Username" VerticalAlignment="Top" Width="128"/>
+		<TextBox x:Name="WindowBoxRegisterPassword" HorizontalAlignment="Left" Height="24" Margin="26,58,0,0" TextWrapping="Wrap" Text="Password" VerticalAlignment="Top" Width="128"/>
+		<Button x:Name="WindowButtonCapture" Content="Capture Fingerprint" HorizontalAlignment="Left" Height="24" Margin="26,105,0,0" VerticalAlignment="Top" Width="128" Click="WindowButtonCapture_Click"/>
+
+		<Button x:Name="WindowButtonRegister" Content="Register" HorizontalAlignment="Left" Height="24" Margin="26,170,0,0" VerticalAlignment="Top" Width="244" Click="WindowButtonRegister_Click"/>
+		<Label x:Name="WindowErrorLabel" Content="" HorizontalAlignment="Left" Margin="26,199,0,0" VerticalAlignment="Top" Width="244" Height="24"/>
+		<Label x:Name="WindowCaptureLabel" Content="No fingerprint captured" HorizontalAlignment="Left" Height="24" Margin="26,134,0,0" VerticalAlignment="Top" Width="150" FontSize="10"/>
+		<Image x:Name="WindowCaptureImage" HorizontalAlignment="Left" Height="140" Margin="169,18,0,0" VerticalAlignment="Top" Width="101"/>
 
 	</Grid>
 </Window>
