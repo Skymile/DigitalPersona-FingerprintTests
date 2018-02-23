@@ -44,22 +44,21 @@ namespace FDB.View
 				this.WindowErrorLabel.Content = ErrorUsernameInvalid;
 				return;
 			}
-			if (UsernameExists(WindowBoxRegisterUsername))
-			{
-				this.WindowErrorLabel.Content = ThisUsernameExists;
-				return;
-			}
-
 			if (this.IsPasswordNull)
 			{
 				this.WindowErrorLabel.Content = ErrorPasswordInvalid;
 				return;
 			}
-			//if (this.IsFingerprintNull)
-			//{
-			//	return;
-			//}
-
+			if (this.IsFingerprintNull)
+			{
+				this.WindowErrorLabel.Content = ErrorFingerprintInvalid;
+				return;
+			}
+			if (UsernameExists(WindowBoxRegisterUsername))
+			{
+				this.WindowErrorLabel.Content = ThisUsernameExists;
+				return;
+			}
 			ValidRegister();
 		}
 
@@ -68,7 +67,7 @@ namespace FDB.View
 
 		private void ValidRegister()
 		{
-			this._Userbase.Add(new Record<Key, User, ShortDescription<string>>(
+			this._Userbase.Add(new Record<Database.Generic.Key, User, ShortDescription<string>>(
 					0, new User(
 					this.WindowBoxRegisterUsername.Text,
 					this.WindowBoxRegisterPassword.Text,
@@ -86,7 +85,8 @@ namespace FDB.View
 
 		private const string ErrorUsernameInvalid = "Type in valid username";
 		private const string ErrorPasswordInvalid = "Type in valid password";
-		
+		private const string ErrorFingerprintInvalid = "Fingerprint needed";
+
 		private const string ThisUsernameExists = "This username already exists";
 
 		private Userbase _Userbase;
