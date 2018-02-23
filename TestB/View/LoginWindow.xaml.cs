@@ -25,12 +25,22 @@ namespace FDB.View
 				WindowErrorLabel.Content = ErrorUsernameInvalid;
 				return;
 			}
+			if (IsPasswordNull)
+			{
+				WindowErrorLabel.Content = ErrorPasswordInvalid;
+				return;
+			}
+			if (IsFingerprintNull)
+			{
+				WindowErrorLabel.Content = ErrorFingerprintInvalid;
+				return;
+			}
 			if (!UsernameExists(WindowBoxLoginUsername))
 			{
 				WindowErrorLabel.Content = ErrorUsernameInvalid;
 				return;
 			}
-			ValidLogin(this.WindowBoxLoginUsername.Text, this.WindowBoxLoginPassword.Text);
+			ValidLogin();
 		}
 
 		private bool IsUsernameNull => this.WindowBoxLoginUsername.Text == null;
@@ -42,33 +52,16 @@ namespace FDB.View
 		private const string ErrorFingerprintInvalid = "Fingerprint needed";
 		private const string UsernameIncorrect = "Incorrect login";
 
-		private bool UsernameExists(TextBox box) => 
-			this._Userbase.Find(i => i.GetElement().Username.CompareTo(box.Text) == 0) == null;
+		private bool UsernameExists(TextBox box) => this._Userbase.Find(i => i.GetElement().Username.CompareTo(box.Text) == 0).Count != 0;
 
-		private void WindowButtonCapture_Click(object sender, RoutedEventArgs e)
+		private void WindowButtonCapture_Click(object sender, RoutedEventArgs e) =>
+			this._Fingerprint = _Scanner.CaptureFingerprintData();
+
+		private void ValidLogin()
 		{
-			if (_Scanner == null)
-				new Message(Message.Error.DeviceNotFound);
-			else
-				this._Fingerprint = _Scanner.CaptureFingerprintData();
-		}
+			int result = _Fingerprint.CompareFmd(this._Userbase[0].GetElement().Finger);
 
-		private void ValidLogin(string username, string password)
-		{
-			if (IsFingerprintNull)
-			{
-				var match = this._Userbase.Find(
-					i => i.GetElement().Username == username && i.GetElement().Password == password
-				);
-
-				WindowErrorLabel.Content = match == null ? "null" : "matched";
-			}
-			else
-			{
-				int result = _Fingerprint.CompareFmd(this._Userbase[0].GetElement().Finger);
-
-				WindowErrorLabel.Content = result.ToString();
-			}
+			WindowErrorLabel.Content = result.ToString();
 		}
 
 		private Userbase _Userbase;

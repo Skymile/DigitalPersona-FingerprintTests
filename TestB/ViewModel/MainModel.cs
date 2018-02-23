@@ -24,15 +24,14 @@ namespace FDB.ViewModel
 				this.scanner = new FingerprintScanner();
 			}
 			catch (TypeInitializationException)
-			{
-				this.scanner = null;
-				new View.Message(View.Message.Error.DeviceNotFound);
+			{ // No scanner found, plug in device
+				throw new DeviceNotFoundException();
 			}
 		}
 
 		public void FingerprintCapture(ref WindowControls.Image image, ref Bitmap imageBitmap)
 		{
-			imageBitmap = this.scanner.CaptureBitmap(0);
+			imageBitmap = scanner.CaptureBitmap(0);
 			image.Source = imageBitmap.GetSource();
 		}
 
@@ -42,25 +41,25 @@ namespace FDB.ViewModel
 		public void Listen(ref WindowControls.Label label) => this.server.ListenAsync(label);
 
 		public void Verify(ref WindowControls.Label label) => 
-			label.Content = (this.scanner.CaptureFingerprintData() == this.MainFingerprint).ToString();
+			label.Content = (scanner.CaptureFingerprintData() == MainFingerprint).ToString();
 
 		public void Login()
 		{
-			if (this.userbase.GetLength().GetValueOrDefault() != 0)
+			if (userbase.GetLength().GetValueOrDefault() != 0)
 			{
 				this.login = new View.LoginWindow(ref userbase, scanner);
-				this.login.ShowDialog();
+				login.ShowDialog();
 			}
 			else
 			{
-				this.message = new View.Message("You have to register first. " + this.userbase.GetLength().ToString());
-				this.message.ShowDialog();
+				message = new View.Message("You have to register first. " + userbase.GetLength().ToString());
+				message.ShowDialog();
 			}
 		}
 
-		public void Register(ref WindowControls.Label users)
+		public void Register()
 		{
-			this.register = new View.RegisterWindow(ref userbase, ref users, scanner);
+			this.register = new View.RegisterWindow(ref userbase, scanner);
 			this.register.ShowDialog();
 		}
 

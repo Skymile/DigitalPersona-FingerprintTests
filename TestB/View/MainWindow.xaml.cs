@@ -42,7 +42,7 @@ namespace FDB.View
 
 		private void WindowButtonLogin_Click(object sender, RoutedEventArgs e) => mainModel.Login();
 
-		private void WindowButtonRegister_Click(object sender, RoutedEventArgs e) => mainModel.Register(ref WindowLabelUsers);
+		private void WindowButtonRegister_Click(object sender, RoutedEventArgs e) => mainModel.Register();
 
 		private User CurrentUser = User.Guest;
 

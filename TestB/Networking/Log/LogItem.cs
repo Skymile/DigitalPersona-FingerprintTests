@@ -24,14 +24,8 @@ namespace FDB.Networking.Log
 		/// </summary>
 		public readonly DateTime Time;
 
-		public int CompareTo(LogItem other)
-		{
-			throw new NotImplementedException();
-		}
+		public int CompareTo(LogItem other) => throw new NotImplementedException();
 
-		public bool Equals(LogItem other)
-		{
-			throw new NotImplementedException();
-		}
+		public bool Equals(LogItem other) => throw new NotImplementedException();
 	}
 }

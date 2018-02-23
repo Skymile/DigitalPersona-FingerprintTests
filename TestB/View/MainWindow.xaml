@@ -24,46 +24,17 @@
 			</MenuItem>
 		</Menu>
 
-		<Button x:Name="WindowButtonLogin" Content="Login" Margin="33,99,862,610" Click="WindowButtonLogin_Click" BorderBrush="#FFDCF5FF">
-			<Button.Background>
-				<LinearGradientBrush EndPoint="0.934,0.534" StartPoint="0.082,0.524">
-					<GradientStop Color="#FF09E9FF" Offset="0"/>
-					<GradientStop Color="#FF0074FF" Offset="0.916"/>
-				</LinearGradientBrush>
-			</Button.Background>
-		</Button>
+		<Button x:Name="WindowButtonLogin" Content="Login" Margin="346,631,567,69" Click="WindowButtonLogin_Click"/>
+		<Button x:Name="WindowButtonRegister" Content="Register" Margin="489,631,425,69" Click="WindowButtonRegister_Click"/>
 
-		<Button x:Name="WindowButtonRegister" Content="Register" Margin="33,66,862,643" Click="WindowButtonRegister_Click" BorderBrush="#FFDCF5FF">
-			<Button.Background>
-				<LinearGradientBrush EndPoint="0.934,0.534" StartPoint="0.082,0.524">
-					<GradientStop Color="#FF09E9FF" Offset="0"/>
-					<GradientStop Color="#FF0074FF" Offset="0.916"/>
-				</LinearGradientBrush>
-			</Button.Background>
-		</Button>
 
-		<Button x:Name="WindowSend" Content="Send" Margin="33,132,862,577" Click="WindowSend_Click" BorderBrush="#FFDCF5FF">
-			<Button.Background>
-				<LinearGradientBrush EndPoint="0.934,0.534" StartPoint="0.082,0.524">
-					<GradientStop Color="#FF09E9FF" Offset="0"/>
-					<GradientStop Color="#FF0074FF" Offset="0.916"/>
-				</LinearGradientBrush>
-			</Button.Background>
-		</Button>
+		<Image x:Name="WindowImage" HorizontalAlignment="Center" VerticalAlignment="Center" Width="428" Height="316" Margin="132,78,456,343"/>
+		<Label x:Name="WindowLabelMatching" HorizontalAlignment="Left" Height="30" Margin="65,607,0,0" VerticalAlignment="Top" Width="163"/>
+		<Button x:Name="WindowSend" Content="Send" HorizontalAlignment="Left" Height="41" Margin="411,453,0,0" VerticalAlignment="Top" Width="90" Click="WindowSend_Click"/>
 
-		<Image x:Name="WindowImage" HorizontalAlignment="Center" VerticalAlignment="Center" Width="428" Height="316" Margin="0,-122,588,543"/>
-		<Label x:Name="WindowLabelUsers" HorizontalAlignment="Left" Height="301" Margin="482,29,0,0" VerticalAlignment="Top" Width="524"/>
-		
-		<Rectangle Margin="-3.667,707,-3,-4.667" Stroke="#FF75D4FF">
-			<Rectangle.Fill>
-				<LinearGradientBrush EndPoint="0.893,0.569" StartPoint="0.04,0.501">
-					<GradientStop Color="Cyan" Offset="0"/>
-					<GradientStop Color="#FF0080FF" Offset="1"/>
-				</LinearGradientBrush>
-			</Rectangle.Fill>
-		</Rectangle>
-		
-		<Label x:Name="WindowLabelMatching" HorizontalAlignment="Left" Height="30" Margin="0,707,0,0" VerticalAlignment="Top" Width="1016"/>
+
+
+
 
 	</Grid>
 </Window>

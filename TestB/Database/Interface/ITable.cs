@@ -20,10 +20,10 @@ namespace FDB.Database.Interface
 		IRecord<TElement, TMeta> Find(TMeta meta);
 
 		ICollection<IRecord<TElement, TMeta>> this[params TKey[] key] { get; }
-		IEnumerable<IRecord<TElement, TMeta>> Find(params TElement[] element);
-		IEnumerable<IRecord<TElement, TMeta>> Find(params TMeta[] meta);
-		IEnumerable<IRecord<TElement, TMeta>> Find(Predicate<IRecord<TElement, TMeta>> predicate);
-		IEnumerable<IRecord<TElement, TMeta>> Find<TSeeker>(TSeeker seek, Func<TSeeker, IRecord<TElement, TMeta>, IRecord<TElement, TMeta>> comparer);
+		ICollection<IRecord<TElement, TMeta>> Find(params TElement[] element);
+		ICollection<IRecord<TElement, TMeta>> Find(params TMeta[] meta);
+		ICollection<IRecord<TElement, TMeta>> Find(Predicate<IRecord<TElement, TMeta>> predicate);
+		ICollection<IRecord<TElement, TMeta>> Find<TSeeker>(TSeeker seek, Func<TSeeker, IRecord<TElement, TMeta>, IRecord<TElement, TMeta>> comparer);
 
 		Flags.Status Add(TKey key, IRecord<TElement, TMeta> record);
 		Flags.Status Add(TKey key, TElement element, TMeta meta = null);
@@ -36,7 +36,8 @@ namespace FDB.Database.Interface
 		Flags.Status Remove(IRecord<TElement, TMeta> record, int count = 1);
 		Flags.Status Remove<TRemove>(TRemove remove, Func<TRemove, IRecord<TElement, TMeta>, bool> func, int count = 1);
 
-		IEnumerable<TSelect> Select<TSelect>(Func<IRecord<TElement, TMeta>, TSelect> selection);
+		ICollection<IRecord<TSelect, TMeta>> Select<TSelect>(Func<IRecord<TElement, TMeta>, TSelect> selection)
+			where TSelect : class, IElement<TSelect>, IComparable<TSelect>;
 
 		ICollection<IRecord<TElement, TMeta>> Where(Predicate<IRecord<TElement, TMeta>> predicate);
 

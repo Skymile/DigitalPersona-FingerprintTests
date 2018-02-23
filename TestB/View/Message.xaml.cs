@@ -1,10 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 
 namespace FDB.View
 {
 	/// <summary>
-	///		Interaction logic for Message.xaml
+	/// Interaction logic for Message.xaml
 	/// </summary>
 	public partial class Message : Window
 	{
@@ -13,42 +24,14 @@ namespace FDB.View
 			InitializeComponent();
 		}
 
-		public Message(string message, bool show = false)
+		public Message(string message)
 		{
 			InitializeComponent();
-			this.WindowErrorMessage.Content = message;
-			if (show)
-				this.ShowDialog();
+			SetMessage(message);
 		}
 
-		public Message(Error error)
-		{
-			InitializeComponent();
-			this.WindowErrorMessage.Content = Resolve(error);
-			this.ShowDialog();
-		}
-
-		public void SetMessage(string message) => WindowErrorMessage.Content = message ?? "Unknown error";
+		public void SetMessage(string message) => WindowErrorMessage.Content = message;
 
 		private void WindowButtonOk_Click(object sender, RoutedEventArgs e) => this.Close();
-
-		private string Resolve(Error error)
-		{
-			switch (error)
-			{
-				case Error.DeviceNotFound:    return "No fingerprint scanner found, plug in device";
-				case Error.MustRegisterFirst: return "You have to register first";
-				case Error.UsernameNotFound:  return "This username doesn't exist";
-				default: return "Unknown error has occured";
-			}
-		}
-
-		[Flags]
-		public enum Error
-		{
-			DeviceNotFound,
-			MustRegisterFirst,
-			UsernameNotFound
-		}
 	}
 }

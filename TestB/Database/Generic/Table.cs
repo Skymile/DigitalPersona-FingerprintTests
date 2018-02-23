@@ -39,12 +39,7 @@ namespace FDB.Database.Generic
 		/// 
 		public Table(IDictionary<TKey, IRecord<TElement, TMeta>> table = null, bool isEncrypted = false)
 		{
-			this._DataTable = new SortedDictionary<TKey, Record<TKey, TElement, TMeta>>();
-
-			if (table != null)
-				foreach (var data in table)
-					this._DataTable.Add(data.Key, new Record<TKey, TElement, TMeta>(data.Key, data.Value.GetElement(), data.Value.GetMeta()));
-
+			this._DataTable = table as SortedDictionary<TKey, Record<TKey, TElement, TMeta>>;
 			this._IsEncrypted = isEncrypted;
 		}
 
@@ -77,12 +72,8 @@ namespace FDB.Database.Generic
 		/// <param name="element">The element.</param>
 		/// <returns></returns>
 		/// 
-		public IRecord<TElement, TMeta> Find(TElement element)
-		{
-			var output = this._DataTable.Where(i => i.Value.GetElement().CompareTo(element) == 0);
-
-			return output.Count() == 0 ? null : output.First().Value;
-		}
+		public IRecord<TElement, TMeta> Find(TElement element) =>
+			this._DataTable.First(i => i.Value.GetElement().CompareTo(element) == 0).Value;
 
 		/// <summary>
 		///		Finds the specified first record by given <paramref name="meta"/>data.
@@ -99,8 +90,8 @@ namespace FDB.Database.Generic
 		/// <param name="elements">The elements.</param>
 		/// <returns></returns>
 		/// 
-		public IEnumerable<IRecord<TElement, TMeta>> Find(params TElement[] elements) =>
-			elements.Select(i => this._DataTable.First(j => j.Value.GetElement().CompareTo(i) == 0).Value);
+		public ICollection<IRecord<TElement, TMeta>> Find(params TElement[] elements) =>
+			elements.Select(i => this._DataTable.First(j => j.Value.GetElement().CompareTo(i) == 0).Value) as ICollection<IRecord<TElement, TMeta>>;
 
 		/// <summary>
 		///		Finds the specified record by given <paramref name="metadata"/>.
@@ -108,8 +99,8 @@ namespace FDB.Database.Generic
 		/// <param name="metadata">The metadata.</param>
 		/// <returns></returns>
 		/// 
-		public IEnumerable<IRecord<TElement, TMeta>> Find(params TMeta[] metadata) =>
-			metadata.Select(i => this._DataTable.First(j => j.Value.GetMeta().CompareTo(i) == 0).Value);
+		public ICollection<IRecord<TElement, TMeta>> Find(params TMeta[] metadata) =>
+			metadata.Select(i => this._DataTable.First(j => j.Value.GetMeta().CompareTo(i) == 0).Value) as ICollection<IRecord<TElement, TMeta>>;
 
 		/// <summary>
 		///		Finds all records matching given predicate.
@@ -117,8 +108,8 @@ namespace FDB.Database.Generic
 		/// <param name="predicate">The predicate.</param>
 		/// <returns></returns>
 		/// 
-		public IEnumerable<IRecord<TElement, TMeta>> Find(Predicate<IRecord<TElement, TMeta>> predicate) =>
-			this._DataTable.Where(i => predicate(i.Value)).Select(i => i.Value);
+		public ICollection<IRecord<TElement, TMeta>> Find(Predicate<IRecord<TElement, TMeta>> predicate) =>
+			this._DataTable.Where(i => predicate(i.Value)).ToList() as ICollection<IRecord<TElement, TMeta>>;
 
 		/// <summary>
 		///		Finds all records matching specified parameter.
@@ -128,7 +119,7 @@ namespace FDB.Database.Generic
 		/// <param name="comparer">The comparer of given parameter and given element from table</param>
 		/// <returns></returns>
 		/// 
-		public IEnumerable<IRecord<TElement, TMeta>> Find<TSeeker>(
+		public ICollection<IRecord<TElement, TMeta>> Find<TSeeker>(
 			TSeeker seek,
 			Func<TSeeker, IRecord<TElement, TMeta>, IRecord<TElement, TMeta>> comparer
 		) => 
@@ -152,7 +143,7 @@ namespace FDB.Database.Generic
 		/// <returns></returns>
 		/// 
 		public Flags.Status Add(TElement element, TMeta meta = null) => 
-			Add(GetMax(), element, meta);
+			Add(this._DataTable.Keys.Max().GetNext(), element, meta);
 
 		/// <summary>
 		/// Adds the specified record.
@@ -160,7 +151,7 @@ namespace FDB.Database.Generic
 		/// <param name="record">The record.</param>
 		/// <returns></returns>
 		public Flags.Status Add(IRecord<TElement, TMeta> record) => 
-			Add(GetMax(), record.GetElement(), record.GetMeta());
+			Add(this._DataTable.Keys.Max().GetNext(), record.GetElement(), record.GetMeta());
 
 		/// <summary>
 		///		Adds the specified record.
@@ -174,7 +165,7 @@ namespace FDB.Database.Generic
 		{
 			Contract.Requires<NullReferenceException>(this._DataTable != null);
 
-			if (this._DataTable.ContainsKey(key))
+			if (this[key] != null)
 				return Flags.Status.Obstacle;
 
 			int prevLength = this.GetLength().Value;
@@ -316,8 +307,12 @@ namespace FDB.Database.Generic
 		/// <returns></returns>
 		/// <exception cref="NullReferenceException"/>
 		/// 
-		public IEnumerable<TSelect> Select<TSelect>(Func<IRecord<TElement, TMeta>, TSelect> selection)
-			=> this._DataTable.Select(i => selection(i.Value));
+		public ICollection<IRecord<TSelect, TMeta>> Select<TSelect>(Func<IRecord<TElement, TMeta>, TSelect> selection)
+					where TSelect : class, IElement<TSelect>, IComparable<TSelect> 
+			=> (ICollection<IRecord<TSelect, TMeta>>)
+			this._DataTable.Select(i => 
+				new Record<TKey, TSelect, TMeta>(i.Key, selection(i.Value), i.Value.GetMeta())
+			).ToList();
 
 		/// <summary>
 		///		Filters the data based on given predicate
@@ -367,7 +362,7 @@ namespace FDB.Database.Generic
 		/// <exception cref="NotImplementedException"></exception>
 		/// 
 		public ITable<TKey, TElement, TMeta> Cartesian(
-			ITable<TKey, TElement, TMeta> other,
+			ITable<TKey, TElement, TMeta> other, 
 			Func<IRecord<TElement, TMeta>, IRecord<TElement, TMeta>> func
 		) => 
 			throw new NotImplementedException();
@@ -389,9 +384,6 @@ namespace FDB.Database.Generic
 
 		private ICollection<K> Convert<T, K>(T[] array, Func<T, K> func) =>
 			array.Select(i => func(i)) as ICollection<K>;
-
-		private TKey GetMax() =>
-			this._DataTable.Count == 0 ? new TKey() : this._DataTable.Keys.Max().GetNext();
 
 		private SortedDictionary<TKey, Record<TKey, TElement, TMeta>> _DataTable;
 		private bool _IsEncrypted;

@@ -13,10 +13,7 @@ namespace FDB.View
 		///		Initializes a new instance of the <see cref="SendWindow"/> class.
 		/// </summary>
 		/// 
-		public SendWindow()
-		{
-			InitializeComponent();
-		}
+		public SendWindow() => InitializeComponent();
 
 		private TcpServer server = new TcpServer();
 

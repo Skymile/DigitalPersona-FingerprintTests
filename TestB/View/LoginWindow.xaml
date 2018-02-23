@@ -7,29 +7,13 @@
         mc:Ignorable="d"
         Title="LoginWindow" Height="300" Width="300">
 	<Grid>
-		<TextBox x:Name="WindowBoxLoginUsername" HorizontalAlignment="Left" Height="24" Margin="24,22,0,0"  TextWrapping="Wrap" Text="Username" VerticalAlignment="Top" Width="248"/>
-		<TextBox x:Name="WindowBoxLoginPassword" HorizontalAlignment="Left" Height="24" Margin="73,125,0,0" TextWrapping="Wrap" Text="Type password" VerticalAlignment="Top" Width="150"/>
+		<TextBox x:Name="WindowBoxLoginUsername" HorizontalAlignment="Left" Height="24" Margin="73,22,0,0"  TextWrapping="Wrap" Text="Username" VerticalAlignment="Top" Width="150"/>
+		<TextBox x:Name="WindowBoxLoginPassword" HorizontalAlignment="Left" Height="24" Margin="73,134,0,0" TextWrapping="Wrap" Text="Type password" VerticalAlignment="Top" Width="150"/>
+		<Button x:Name="WindowButtonLogin" Content="Login" HorizontalAlignment="Left" Height="24" Margin="112,182,0,0" VerticalAlignment="Top" Width="64" Click="WindowButtonLogin_Click"/>
+		<Button x:Name="WindowButtonCapture" Content="Capture fingerprint" HorizontalAlignment="Left" Margin="81,76,0,0" VerticalAlignment="Top" Width="134" Height="24" Click="WindowButtonCapture_Click"/>
 
-		<Button x:Name="WindowButtonLogin" Content="Login" HorizontalAlignment="Left" Height="24" Margin="24,182,0,0" VerticalAlignment="Top" Width="248" Click="WindowButtonLogin_Click" BorderBrush="#FFDCF5FF">
-			<Button.Background>
-				<LinearGradientBrush EndPoint="0.934,0.534" StartPoint="0.082,0.524">
-					<GradientStop Color="#FF09E9FF" Offset="0"/>
-					<GradientStop Color="#FF0074FF" Offset="0.916"/>
-				</LinearGradientBrush>
-			</Button.Background>
-		</Button>
-
-		<Button x:Name="WindowButtonCapture" Content="Capture fingerprint" HorizontalAlignment="Left" Margin="73,67,0,0" VerticalAlignment="Top" Width="150" Height="24" Click="WindowButtonCapture_Click" BorderBrush="#FFDCF5FF">
-			<Button.Background>
-				<LinearGradientBrush EndPoint="0.934,0.534" StartPoint="0.082,0.524">
-					<GradientStop Color="#FF09E9FF" Offset="0"/>
-					<GradientStop Color="#FF0074FF" Offset="0.916"/>
-				</LinearGradientBrush>
-			</Button.Background>
-		</Button>
-
-		<Label x:Name="WindowErrorLabel" Content="" HorizontalAlignment="Left" Margin="10,211,0,0" VerticalAlignment="Top" Width="272"/>
-		<Label x:Name="WindowLabelOr" Content="Or" HorizontalAlignment="Left" Height="24" Margin="136,96,0,0" VerticalAlignment="Top" Width="30"/>
+		<Label x:Name="WindowErrorLabel" Content="" HorizontalAlignment="Left" Margin="64,227,0,0" VerticalAlignment="Top" Width="175"/>
+		<Label x:Name="WindowLabelOr" Content="Or" HorizontalAlignment="Left" Height="24" Margin="136,105,0,0" VerticalAlignment="Top" Width="30"/>
 
 	</Grid>
 </Window>
