@@ -39,7 +39,11 @@ namespace FDB.Database.Generic
 		/// 
 		public Table(IDictionary<TKey, IRecord<TElement, TMeta>> table = null, bool isEncrypted = false)
 		{
-			this._DataTable = table as SortedDictionary<TKey, Record<TKey, TElement, TMeta>>;
+			this._DataTable = new SortedDictionary<TKey, Record<TKey, TElement, TMeta>>();
+
+			foreach (var data in table)
+				this._DataTable.Add(data.Key, new Record<TKey, TElement, TMeta>(data.Key, data.Value.GetElement(), data.Value.GetMeta()));
+
 			this._IsEncrypted = isEncrypted;
 		}
 
