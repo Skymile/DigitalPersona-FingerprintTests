@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 
 using FDB.Biometrics;
@@ -16,7 +17,10 @@ namespace FDB.View
 		/// Initializes a new instance of the <see cref="RegisterWindow"/> class.
 		/// </summary>
 		/// 
-		public RegisterWindow() => InitializeComponent();
+		public RegisterWindow()
+		{
+			InitializeComponent();
+		}
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="RegisterWindow"/> class.
@@ -24,21 +28,16 @@ namespace FDB.View
 		/// <param name="userbase">The userbase.</param>
 		/// <param name="scanner">The scanner.</param>
 		/// 
-		public RegisterWindow(ref Userbase userbase, FingerprintScanner scanner)
+		public RegisterWindow(ref Userbase userbase, ref Label usersInfo, FingerprintScanner scanner)
 		{
 			InitializeComponent();
 			this._Userbase = userbase;
 			this._Scanner = scanner;
+			this.userInfo = usersInfo;
 		}
 
 		private void WindowButtonRegister_Click(object sender, RoutedEventArgs e)
 		{
-			//if (Contract.OnCondition(IsUsernameNull, () => WindowErrorLabel.Content = ErrorUsernameInvalid) &&
-			//	Contract.OnCondition(IsPasswordNull, () => WindowErrorLabel.Content = ErrorPasswordInvalid) &&
-			//	Contract.OnCondition(IsFingerprintNull, () => WindowErrorLabel.Content = ErrorFingerprintInvalid) &&
-			//	Contract.OnCondition(UsernameExists(WindowBoxRegisterUsername), () => WindowErrorLabel.Content = ThisUsernameExists))
-
-			// Tmp something in contracts is funny
 			if (this.IsUsernameNull)
 			{
 				this.WindowErrorLabel.Content = ErrorUsernameInvalid;
@@ -55,25 +54,24 @@ namespace FDB.View
 				this.WindowErrorLabel.Content = ErrorPasswordInvalid;
 				return;
 			}
-			//if (this.IsFingerprintNull)
-			//{
-			//	return;
-			//}
 
-			ValidRegister();
+			// TODO fingerprint check prev
+			var user = new User(this.WindowBoxRegisterUsername.Text, this.WindowBoxRegisterPassword.Text, _TempFingerprint);
+
+			if (this._Userbase.Find(user) != null)
+				this.WindowErrorLabel.Content = "This username already exists";
+			else
+				ValidRegister(user);
 		}
 
 		private void WindowButtonCapture_Click(object sender, RoutedEventArgs e) => 
 			this._TempFingerprint = _Scanner.CaptureFingerprintData();
 
-		private void ValidRegister()
+		private void ValidRegister(User user)
 		{
-			this._Userbase.Add(new Record<Key, User, ShortDescription<string>>(
-					0, new User(
-					this.WindowBoxRegisterUsername.Text,
-					this.WindowBoxRegisterPassword.Text,
-					this._TempFingerprint
-				)));
+			this._Userbase.Add(user);
+
+			this.userInfo.Content = String.Join("\n", this._Userbase.Select(i => $"{i.GetElement().Username} {i.GetElement().Password}"));
 
 			this.WindowErrorLabel.Content = "Success " + this._Userbase.GetLength();
 		}
@@ -82,7 +80,8 @@ namespace FDB.View
 		private bool IsPasswordNull => this.WindowBoxRegisterPassword.Text == null;
 		private bool IsFingerprintNull => this._TempFingerprint == null;
 
-		private bool UsernameExists(TextBox box) => this._Userbase.Find(i => i.GetElement().Username.CompareTo(box.Text) == 0).Count != 0;
+		private bool UsernameExists(TextBox box) => 
+			this._Userbase.Find(i => i.GetElement().Username.CompareTo(box.Text) == 0) == null;
 
 		private const string ErrorUsernameInvalid = "Type in valid username";
 		private const string ErrorPasswordInvalid = "Type in valid password";
@@ -93,5 +92,7 @@ namespace FDB.View
 		private FingerprintScanner _Scanner;
 
 		private Fingerprint _TempFingerprint;
+
+		private Label userInfo;
 	}
 }

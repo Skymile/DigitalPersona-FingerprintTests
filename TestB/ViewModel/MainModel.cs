@@ -58,9 +58,9 @@ namespace FDB.ViewModel
 			}
 		}
 
-		public void Register()
+		public void Register(ref WindowControls.Label users)
 		{
-			this.register = new View.RegisterWindow(ref userbase, scanner);
+			this.register = new View.RegisterWindow(ref userbase, ref users, scanner);
 			this.register.ShowDialog();
 		}
 

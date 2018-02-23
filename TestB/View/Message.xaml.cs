@@ -8,7 +8,10 @@ namespace FDB.View
 	/// </summary>
 	public partial class Message : Window
 	{
-		public Message() => InitializeComponent();
+		public Message()
+		{
+			InitializeComponent();
+		}
 
 		public Message(string message, bool show = false)
 		{
