@@ -6,9 +6,17 @@
         xmlns:local="clr-namespace:FDB.View"
         mc:Ignorable="d"
         Title="Message" Height="160" Width="320" ShowInTaskbar="False" Topmost="True" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
-	<Grid>
-		<Label x:Name="WindowErrorMessage" Content="Unknown Error" HorizontalAlignment="Left" Height="66" Margin="10,10,0,0" VerticalAlignment="Top" Width="294"/>
-		<Button x:Name="WindowButtonOk" Content="OK" HorizontalAlignment="Center" Height="31" Margin="103,90,101,0" VerticalAlignment="Top" Width="110" Click="WindowButtonOk_Click"/>
+    <Grid Background="Black">
+        <Label x:Name="WindowErrorMessage" Content="Unknown Error" HorizontalAlignment="Left" Height="66" Margin="10,10,0,0" VerticalAlignment="Top" Width="294" Background="Black" Foreground="White"/>
+        <Button x:Name="WindowButtonOk" Content="OK" HorizontalAlignment="Center" Height="31" Margin="103,81,101,0" VerticalAlignment="Top" Width="110" Click="WindowButtonOk_Click" BorderBrush="#FFDCF5FF">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.934,0.534" StartPoint="0.082,0.524">
+                    <GradientStop Color="#FF09E9FF" Offset="0"/>
+                    <GradientStop Color="#FF0074FF" Offset="0.916"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
 
-	</Grid>
+
+    </Grid>
 </Window>

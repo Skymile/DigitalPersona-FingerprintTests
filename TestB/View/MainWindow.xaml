@@ -5,36 +5,238 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FDB.View"
         mc:Ignorable="d"
-        Title="MainWindow" Height="768" Width="1024">
+        Title="MainWindow" Height="768" Width="1024" Visibility="Visible" WindowStyle="None" BorderThickness="0,0,0,0">
 
-	<Grid>
+    <Window.Resources>
 
-		<Menu HorizontalAlignment="Stretch" VerticalAlignment="Top">
-			<MenuItem x:Name="Debug" Width="128" Height="24" Header="_Debug">
-				<MenuItem x:Name="Image" Width="128" Height="24" Header="_Image">
-					<MenuItem x:Name="Capture"  Width="128" Height="24" Header="_Capture" Click="WindowButtonCapture_Click"/>
-					<MenuItem x:Name="Binarize" Width="128" Height="24" Header="_Binarize" Click="WindowButtonBinarize_Click"/>
-					<MenuItem x:Name="Refresh"  Width="128" Height="24" Header="_Refresh" Click="WindowButtonRefresh_Click"/>
-					<MenuItem x:Name="Verify"   Width="128" Height="24" Header="_Verify" Click="WindowButtonIdentify_Click"/>
-					<MenuItem x:Name="CaptureSet" Width="168" Height="24" Header="_Capture and set as default" Click="WindowButtonSet_Click"/>
-				</MenuItem>
-				<MenuItem x:Name="TCP" Width="128" Height="24" Header="_TCP">
-					<MenuItem x:Name="Listen" Width="128" Height="24" Header="_Listen" Click="WindowButtonListen_Click"/>
-				</MenuItem>
-			</MenuItem>
-		</Menu>
+        <SolidColorBrush x:Key="HighlightedBackgroundBrush" Color="#FF1D1D1D" />
+        <SolidColorBrush x:Key="MenuBackgroundBrush"        Color="Black" />
+        <SolidColorBrush x:Key="NormalBorderBrush"          Color="DarkBlue" />
+        <SolidColorBrush x:Key="SolidMenuFontBrush"         Color="White" />
+        <SolidColorBrush x:Key="HighlightedText"            Color="White" />
 
-		<Button x:Name="WindowButtonLogin" Content="Login" Margin="346,631,567,69" Click="WindowButtonLogin_Click"/>
-		<Button x:Name="WindowButtonRegister" Content="Register" Margin="489,631,425,69" Click="WindowButtonRegister_Click"/>
+        <Style x:Key="{x:Type Menu}" TargetType="{x:Type Menu}">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Height" Value="25"/>
+            <Setter Property="Foreground" Value="{StaticResource SolidMenuFontBrush}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Menu}">
+                        <Border
+                                Background="{StaticResource MenuBackgroundBrush}"
+                                BorderBrush="{StaticResource MenuBackgroundBrush}"
+                                BorderThickness="1">
+                            <StackPanel ClipToBounds="True" Orientation="Horizontal" IsItemsHost="True"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
+        <Style x:Key="{x:Type MenuItem}" TargetType="{x:Type MenuItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type MenuItem}">
+                        <Border x:Name="Border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="1">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition x:Name="Col0" MinWidth="17" Width="Auto" SharedSizeGroup="MenuItemIconColumnGroup"/>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuTextColumnGroup"/>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIGTColumnGroup"/>
+                                    <ColumnDefinition x:Name="Col3" Width="14"/>
+                                </Grid.ColumnDefinitions>
 
-		<Image x:Name="WindowImage" HorizontalAlignment="Center" VerticalAlignment="Center" Width="428" Height="316" Margin="132,78,456,343"/>
-		<Label x:Name="WindowLabelMatching" HorizontalAlignment="Left" Height="30" Margin="65,607,0,0" VerticalAlignment="Top" Width="163"/>
-		<Button x:Name="WindowSend" Content="Send" HorizontalAlignment="Left" Height="41" Margin="411,453,0,0" VerticalAlignment="Top" Width="90" Click="WindowSend_Click"/>
+                                <!-- ContentPresenter to show an Icon if needed -->
+                                <ContentPresenter Grid.Column="0" Margin="4,0,6,0" x:Name="Icon" VerticalAlignment="Center" ContentSource="Icon"/>
 
+                                <!-- Glyph is a checkmark if needed for a checkable menu -->
+                                <Grid Grid.Column="0" Visibility="Hidden" Margin="4,0,6,0" x:Name="GlyphPanel" VerticalAlignment="Center">
+                                    <Path x:Name="GlyphPanelpath" VerticalAlignment="Center" Fill="{TemplateBinding Foreground}" Data="M0,2 L0,4.8 L2.5,7.4 L7.1,2.8 L7.1,0 L2.5,4.6 z" FlowDirection="LeftToRight"/>
+                                </Grid>
 
+                                <!-- Content for the menu text etc -->
+                                <ContentPresenter Grid.Column="1"
+                                Margin="{TemplateBinding Padding}"
+                                x:Name="HeaderHost"
+                                RecognizesAccessKey="True"
+                                ContentSource="Header"/>
 
+                                <!-- Content for the menu IGT -->
+                                <ContentPresenter Grid.Column="2"
+                                Margin="8,1,8,1"
+                                x:Name="IGTHost"
+                                ContentSource="InputGestureText"
+                                VerticalAlignment="Center"/>
 
+                                <!-- Arrow drawn path which points to the next level of the menu -->
+                                <Grid Grid.Column="3" Margin="4,0,6,0" x:Name="ArrowPanel" VerticalAlignment="Center">
+                                    <Path x:Name="ArrowPanelPath" HorizontalAlignment="Right" VerticalAlignment="Center" Fill="{TemplateBinding Foreground}" Data="M0,0 L0,8 L4,4 z"/>
+                                </Grid>
 
-	</Grid>
+                                <!-- The Popup is the body of the menu which expands down or across depending on the level of the item -->
+                                <Popup IsOpen="{Binding Path=IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}" Placement="Right" x:Name="SubMenuPopup" Focusable="false" PopupAnimation="{DynamicResource {x:Static SystemParameters.MenuPopupAnimationKey}}">
+                                    <Border x:Name="SubMenuBorder" BorderBrush="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Menu}}}" BorderThickness="1" Padding="2,2,2,2">
+                                        <Grid x:Name="SubMenu" Grid.IsSharedSizeScope="True">
+                                            <!-- StackPanel holds children of the menu. This is set by IsItemsHost=True -->
+                                            <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle"/>
+                                        </Grid>
+                                    </Border>
+                                </Popup>
+                            </Grid>
+                        </Border>
+
+                        <!-- These triggers re-configure the four arrangements of MenuItem to show different levels of menu via Role -->
+                        <ControlTemplate.Triggers>
+                            <!-- Role = TopLevelHeader : this is the root menu item in a menu; the Popup expands down -->
+                            <Trigger Property="Role" Value="TopLevelHeader">
+                                <Setter Property="Padding" Value="6,1,6,1"/>
+                                <Setter Property="Placement" Value="Bottom" TargetName="SubMenuPopup"/>
+                                <Setter Property="MinWidth" Value="0" TargetName="Col0"/>
+                                <Setter Property="Width" Value="Auto" TargetName="Col3"/>
+                                <Setter Property="Visibility" Value="Collapsed" TargetName="Icon"/>
+                                <Setter Property="Visibility" Value="Collapsed" TargetName="GlyphPanel"/>
+                                <Setter Property="Visibility" Value="Collapsed" TargetName="IGTHost"/>
+                                <Setter Property="Visibility" Value="Collapsed" TargetName="ArrowPanel"/>
+                            </Trigger>
+
+                            <!-- Role = TopLevelItem :  this is a child menu item from the top level without any child items-->
+                            <Trigger Property="Role" Value="TopLevelItem">
+                                <Setter Property="Padding" Value="6,1,6,1"/>
+                                <Setter Property="Visibility" Value="Collapsed" TargetName="ArrowPanel"/>
+                            </Trigger>
+
+                            <!-- Role = SubMenuHeader : this is a child menu item which does not have children -->
+                            <Trigger Property="Role" Value="SubmenuHeader">
+                                <Setter Property="DockPanel.Dock" Value="Top"/>
+                                <Setter Property="Padding" Value="0,2,0,2"/>
+                            </Trigger>
+
+                            <!-- Role = SubMenuItem : this is a child menu item which has children-->
+                            <Trigger Property="Role" Value="SubmenuItem">
+                                <Setter Property="DockPanel.Dock" Value="Top"/>
+                                <Setter Property="Padding" Value="0,2,0,2"/>
+                                <Setter Property="Visibility" Value="Collapsed" TargetName="ArrowPanel"/>
+                            </Trigger>
+                            <Trigger Property="IsSuspendingPopupAnimation" Value="true">
+                                <Setter Property="PopupAnimation" Value="None" TargetName="SubMenuPopup"/>
+                            </Trigger>
+
+                            <!-- If no Icon is present the we collapse the Icon Content -->
+                            <Trigger Property="Icon" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Collapsed" TargetName="Icon"/>
+                            </Trigger>
+
+                            <!-- The GlyphPanel contains the CheckMark -->
+                            <Trigger Property="IsChecked" Value="true">
+                                <Setter Property="Visibility" Value="Visible" TargetName="GlyphPanel"/>
+                                <Setter Property="Visibility" Value="Collapsed" TargetName="Icon"/>
+                            </Trigger>
+
+                            <!-- Using the system colors for the Menu Highlight and IsEnabled-->
+                            <Trigger Property="IsHighlighted" Value="true">
+                                <Setter Property="Background" Value="{StaticResource HighlightedBackgroundBrush}" TargetName="Border"/>
+                                <Setter Property="Foreground" Value="{StaticResource HighlightedText}"/>
+                                <Setter Property="BorderBrush" Value="{StaticResource NormalBorderBrush}" TargetName="Border"/>
+                            </Trigger>
+                            <Trigger Property="IsHighlighted" Value="false">
+                                <Setter Property="Background" Value="{StaticResource MenuBackgroundBrush}" TargetName="Border"/>
+                                <Setter Property="Foreground" Value="{StaticResource SolidMenuFontBrush}"/>
+                                <Setter Property="BorderBrush" Value="{StaticResource MenuBackgroundBrush}" TargetName="Border"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="Gray"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Window.Resources>
+
+    <Grid Background="White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Rectangle Fill="Black" HorizontalAlignment="Left" Stroke="#FF75D4FF" VerticalAlignment="Stretch" Width="176.167" Margin="-3.667,10,0,30.5"/>
+
+        <Button x:Name="WindowButtonLogin" 
+                Content="Login" 
+                Margin="10,58,0,0" 
+                Click="WindowButtonLogin_Click" 
+                BorderBrush="#FFDCF5FF"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top" Height="25" Width="150">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.934,0.534" StartPoint="0.082,0.524">
+                    <GradientStop Color="#FF09E9FF" Offset="0"/>
+                    <GradientStop Color="#FF0074FF" Offset="0.916"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+
+        <Button x:Name="WindowButtonRegister" 
+                Content="Register" 
+                Margin="10,29,0,0" 
+                Click="WindowButtonRegister_Click" 
+                BorderBrush="#FFDCF5FF"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top" Height="24" Width="150">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.934,0.534" StartPoint="0.082,0.524">
+                    <GradientStop Color="#FF09E9FF" Offset="0"/>
+                    <GradientStop Color="#FF0074FF" Offset="0.916"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+
+        <Button x:Name="WindowSend" 
+                Content="Send"
+                Margin="10,88,0,0"
+                Click="WindowSend_Click" 
+                BorderBrush="#FFDCF5FF"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top" Height="25" Width="150">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.934,0.534" StartPoint="0.082,0.524">
+                    <GradientStop Color="#FF09E9FF" Offset="0"/>
+                    <GradientStop Color="#FF0074FF" Offset="0.916"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+
+        <Image x:Name="WindowImage" HorizontalAlignment="Center" VerticalAlignment="Center" Width="298" Height="330" Margin="490,-100,228,530"/>
+        <Label x:Name="WindowLabelUsers" HorizontalAlignment="Left" Height="242.833" Margin="177.5,480,0,0" VerticalAlignment="Top" Width="828.5"/>
+
+        <Rectangle HorizontalAlignment="Stretch" 
+                   VerticalAlignment="Bottom"
+                   Margin="-3.667,0,-3,-3.667" 
+                   Stroke="#FF75D4FF" Height="35.834" RenderTransformOrigin="0.5,0.5" Fill="Black"/>
+
+        <Label x:Name="WindowLabelMatching" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Foreground="White"/>
+
+        <Button x:Name="WindowExit" HorizontalAlignment="Right" Height="25" VerticalAlignment="Top" Width="25" Background="Black" BorderBrush="#FF171717" Foreground="White" Click="WindowExit_Click"/>
+        <Button x:Name="WindowMaximize" HorizontalAlignment="Right" Height="25" Margin="0,0,25,0" VerticalAlignment="Top" Width="25" Background="Black" BorderBrush="#FF171717" Foreground="White" Click="WindowMaximize_Click"/>
+        <Button x:Name="WindowMinimalize" HorizontalAlignment="Right" Height="25" Margin="0,0,50,0" VerticalAlignment="Top" Width="25" Background="Black" BorderBrush="#FF171717" Foreground="White" Click="WindowMinimalize_Click"/>
+
+        <Menu HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="Black" Foreground="Black" Margin="0,0,75,0" MouseMove="Menu_MouseMove" >
+
+            <MenuItem x:Name="Debug" Width="128" Height="24" Header="_Debug" Foreground="White" Background="Black">
+                <MenuItem x:Name="Image" Width="128" Height="24" Header="_Image" Background="Black" BorderBrush="Black">
+                    <MenuItem x:Name="Capture"    Width="144" Height="24" Header="_Capture" Click="WindowButtonCapture_Click" Foreground="White" Background="Black" BorderBrush="Black"/>
+                    <MenuItem x:Name="Binarize"   Width="144" Height="24" Header="_Binarize" Click="WindowButtonBinarize_Click" Background="Black" BorderBrush="Black"/>
+                    <MenuItem x:Name="Refresh"    Width="144" Height="24" Header="_Refresh" Click="WindowButtonRefresh_Click" Background="Black" BorderBrush="Black"/>
+                    <MenuItem x:Name="Verify"     Width="144" Height="24" Header="_Verify" Click="WindowButtonIdentify_Click" Background="Black" BorderBrush="Black"/>
+                    <MenuItem x:Name="CaptureSet" Width="144" Height="24" Header="_Capture, set as default" Click="WindowButtonSet_Click" Background="Black" BorderBrush="Black"/>
+                </MenuItem>
+                <MenuItem x:Name="TCP" Width="128" Height="24" Header="_TCP" Background="Black" BorderBrush="Black">
+                    <MenuItem x:Name="Listen" Width="128" Height="24" Header="_Listen" Click="WindowButtonListen_Click" Background="Black" BorderBrush="Black"/>
+                </MenuItem>
+            </MenuItem>
+        </Menu>
+        
+        <ListBox x:Name="ListBoxPassword" HorizontalAlignment="Stretch" Height="450" Margin="172.5,25,0,0" VerticalAlignment="Top"/>
+
+    </Grid>
 </Window>

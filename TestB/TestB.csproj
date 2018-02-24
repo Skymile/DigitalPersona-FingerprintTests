@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FDB</RootNamespace>
     <AssemblyName>FDB</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -112,6 +112,9 @@
     <Compile Include="Networking\Users\User.cs" />
     <Compile Include="Networking\Users\Userbase.cs" />
     <Compile Include="UnhandledExceptionException.cs" />
+    <Compile Include="View\BlueButton.xaml.cs">
+      <DependentUpon>BlueButton.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Message.xaml.cs">
       <DependentUpon>Message.xaml</DependentUpon>
     </Compile>
@@ -121,6 +124,10 @@
     <Compile Include="View\SendWindow.xaml.cs">
       <DependentUpon>SendWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="View\BlueButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\LoginWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
