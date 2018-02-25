@@ -97,6 +97,7 @@
     <Compile Include="Biometrics\FingerprintScanner.cs" />
     <Compile Include="Database\Generic\ShortDescription.cs" />
     <Compile Include="Database\Generic\Description.cs" />
+    <Compile Include="Database\Generic\UserRecord.cs" />
     <Compile Include="Database\Interface\Flags.cs" />
     <Compile Include="Database\Interface\IElement.cs" />
     <Compile Include="Database\Interface\IKey.cs" />
@@ -142,7 +143,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="View\DeviceNotFoundException.cs" />
+    <Compile Include="Support\DeviceNotFoundException.cs" />
     <Compile Include="View\LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>

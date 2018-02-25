@@ -16,7 +16,7 @@ namespace FDB.View
         public MainWindow()
         {
             InitializeComponent();
-            WindowLabelMatching.Content = "Init";
+            WindowLabelMatching.Content = Properties.Resources.Initialization;
         }
 
         private void WindowButtonCapture_Click(object sender, RoutedEventArgs e) => mainModel.FingerprintCapture(ref WindowImage, ref WindowImageSource);
@@ -43,7 +43,7 @@ namespace FDB.View
 
         private void WindowButtonLogin_Click(object sender, RoutedEventArgs e) => mainModel.Login();
 
-        private void WindowButtonRegister_Click(object sender, RoutedEventArgs e) => mainModel.Register(ref WindowLabelUsers);
+        private void WindowButtonRegister_Click(object sender, RoutedEventArgs e) => mainModel.Register(ref ListBoxPassword);
         
         private User CurrentUser = User.Guest;
 

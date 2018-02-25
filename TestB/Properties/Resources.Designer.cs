@@ -59,5 +59,113 @@ namespace FDB.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid address detected.
+        /// </summary>
+        internal static string AddressInvalid {
+            get {
+                return ResourceManager.GetString("AddressInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Available.
+        /// </summary>
+        internal static string Available {
+            get {
+                return ResourceManager.GetString("Available", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failure.
+        /// </summary>
+        internal static string Failure {
+            get {
+                return ResourceManager.GetString("Failure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fingerprint needed.
+        /// </summary>
+        internal static string FingerprintNeeded {
+            get {
+                return ResourceManager.GetString("FingerprintNeeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Starting....
+        /// </summary>
+        internal static string Initialization {
+            get {
+                return ResourceManager.GetString("Initialization", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to None.
+        /// </summary>
+        internal static string NotAvailable {
+            get {
+                return ResourceManager.GetString("NotAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type in valid password.
+        /// </summary>
+        internal static string PasswordInvalid {
+            get {
+                return ResourceManager.GetString("PasswordInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Success.
+        /// </summary>
+        internal static string Success {
+            get {
+                return ResourceManager.GetString("Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data send to TCP server.
+        /// </summary>
+        internal static string TCPDataSend {
+            get {
+                return ResourceManager.GetString("TCPDataSend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This username already exists.
+        /// </summary>
+        internal static string UsernameExists {
+            get {
+                return ResourceManager.GetString("UsernameExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incorrect login.
+        /// </summary>
+        internal static string UsernameIncorrect {
+            get {
+                return ResourceManager.GetString("UsernameIncorrect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type in valid username.
+        /// </summary>
+        internal static string UsernameInvalid {
+            get {
+                return ResourceManager.GetString("UsernameInvalid", resourceCulture);
+            }
+        }
     }
 }

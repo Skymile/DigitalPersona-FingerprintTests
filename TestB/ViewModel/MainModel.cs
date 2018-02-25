@@ -8,13 +8,10 @@ using FDB.Biometrics;
 using FDB.Networking;
 using FDB.Networking.Log;
 using FDB.Networking.Users;
-using FDB.Database.Interface;
 using FDB.Database.Generic;
 
 namespace FDB.ViewModel
 {
-	using UserbaseTable = SortedDictionary<Key, IRecord<User, ShortDescription<string>>>;
-
 	public class MainModel
 	{
 		public MainModel()
@@ -58,9 +55,9 @@ namespace FDB.ViewModel
 			}
 		}
 
-		public void Register(ref WindowControls.Label users)
+		public void Register(ref WindowControls.ListBox userlist)
 		{
-			this.register = new View.RegisterWindow(ref userbase, ref users, scanner);
+			this.register = new View.RegisterWindow(ref userbase, ref userlist, scanner);
 			this.register.ShowDialog();
 		}
 
@@ -75,6 +72,6 @@ namespace FDB.ViewModel
 
 		private TcpServer server = new TcpServer();
 		private Logger logger = new Logger();
-		private Userbase userbase = new Userbase(new UserbaseTable());
+		private Userbase userbase = new Userbase(new SortedDictionary<Key, UserRecord>());
 	}
 }

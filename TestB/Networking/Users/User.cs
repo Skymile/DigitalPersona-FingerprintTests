@@ -70,5 +70,7 @@ namespace FDB.Networking.Users
 		/// 
 		public int CompareTo(User other) =>
 			this.Username.CompareTo(other.Username);
+
+		public override string ToString() => $"{Username} ******";
 	}
 }

@@ -5,7 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FDB.View"
         mc:Ignorable="d"
-        Title="MainWindow" Height="768" Width="1024" Visibility="Visible" WindowStyle="None" BorderThickness="0,0,0,0">
+        Title="MainWindow" 
+        Height="768" 
+        Width="1024" 
+        Visibility="Visible" 
+        WindowStyle="None" 
+        BorderThickness="0,0,0,0">
 
     <Window.Resources>
 
@@ -207,7 +212,8 @@
         </Button>
 
         <Image x:Name="WindowImage" HorizontalAlignment="Center" VerticalAlignment="Center" Width="298" Height="330" Margin="490,-100,228,530"/>
-        <Label x:Name="WindowLabelUsers" HorizontalAlignment="Left" Height="242.833" Margin="177.5,480,0,0" VerticalAlignment="Top" Width="828.5"/>
+        
+        <Label x:Name="WindowLabelUsers" HorizontalAlignment="Left" Height="243" Margin="172,480,0,0" VerticalAlignment="Top" Width="834" Background="{x:Null}"/>
 
         <Rectangle HorizontalAlignment="Stretch" 
                    VerticalAlignment="Bottom"
@@ -235,8 +241,8 @@
                 </MenuItem>
             </MenuItem>
         </Menu>
-        
-        <ListBox x:Name="ListBoxPassword" HorizontalAlignment="Stretch" Height="450" Margin="172.5,25,0,0" VerticalAlignment="Top"/>
+
+        <ListBox x:Name="ListBoxPassword" HorizontalAlignment="Stretch" Height="450" Margin="172,25,10,0" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="{x:Null}" FontFamily="Consolas"/>
 
     </Grid>
 </Window>

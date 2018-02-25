@@ -1,5 +1,4 @@
 ﻿using System;
-
 using FDB.Database.Interface;
 
 namespace FDB.Database.Generic
@@ -47,19 +46,19 @@ namespace FDB.Database.Generic
 		///		Gets the key.
 		/// </summary>
 		/// 
-		public TKey GetKey() => this.Key;
+		public virtual TKey GetKey() => this.Key;
 
 		///	<summary>
 		///		Gets the metadata.
 		/// </summary>
 		/// 
-		public TMeta GetMeta() => this.Meta;
+		public virtual TMeta GetMeta() => this.Meta;
 
 		/// <summary>
 		///		Gets the element.
 		/// </summary>
 		/// 
-		public TElement GetElement() => this.Data;
+		public virtual TElement GetElement() => this.Data;
 
 		/// <summary>
 		///		Modifies copy of this record.

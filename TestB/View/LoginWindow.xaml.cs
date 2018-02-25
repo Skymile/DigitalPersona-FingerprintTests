@@ -1,13 +1,17 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 
 using FDB.Biometrics;
+using FDB.Database.Generic;
+using FDB.Database.Interface;
 using FDB.Networking.Users;
 
 namespace FDB.View
 {
 	/// <summary>
-	/// Interaction logic for LoginWindow.xaml
+	///		Interaction logic for LoginWindow.xaml
 	/// </summary>
 	public partial class LoginWindow : Window
 	{
@@ -20,30 +24,18 @@ namespace FDB.View
 
 		private void WindowButtonLogin_Click(object sender, RoutedEventArgs e)
 		{
-			if (IsUsernameNull)
-			{
-				WindowErrorLabel.Content = ErrorUsernameInvalid;
-				return;
-			}
-			if (!UsernameExists(WindowBoxLoginUsername))
-			{
-				WindowErrorLabel.Content = ErrorUsernameInvalid;
-				return;
-			}
-			ValidLogin(this.WindowBoxLoginUsername.Text, this.WindowBoxLoginPassword.Text);
+			if (this.IsUsernameNull || !UsernameExists(this.WindowBoxLoginUsername))
+				this.WindowErrorLabel.Content = Properties.Resources.UsernameInvalid;
+			else
+				ValidLogin(this.WindowBoxLoginUsername.Text, this.WindowBoxLoginPassword.Text);
 		}
 
 		private bool IsUsernameNull => this.WindowBoxLoginUsername.Text == null;
 		private bool IsPasswordNull => this.WindowBoxLoginPassword.Text == null;
 		private bool IsFingerprintNull => this._Fingerprint == null;
 
-		private const string ErrorUsernameInvalid = "Type in valid username";
-		private const string ErrorPasswordInvalid = "Type in valid password";
-		private const string ErrorFingerprintInvalid = "Fingerprint needed";
-		private const string UsernameIncorrect = "Incorrect login";
-
-		private bool UsernameExists(TextBox box) => 
-			this._Userbase.Find(i => i.GetElement().Username.CompareTo(box.Text) == 0) == null;
+		private bool UsernameExists(TextBox box) =>
+			this._Userbase.Find(i => i.GetElement().Username.CompareTo(box.Text) == 0) != null;
 
 		private void WindowButtonCapture_Click(object sender, RoutedEventArgs e)
 		{
@@ -53,21 +45,25 @@ namespace FDB.View
 				this._Fingerprint = _Scanner.CaptureFingerprintData();
 		}
 
-		private void ValidLogin(string username, string password)
+		private IRecord<User, ShortDescription<string>> ValidLogin(string username, string password)
 		{
-			if (IsFingerprintNull)
-			{
-				var match = this._Userbase.Find(
-					i => i.GetElement().Username == username && i.GetElement().Password == password
-				);
+			var match = this._Userbase.Find(i => i.GetElement().Username == username).ElementAtOrDefault(0);
+			
+			if (match != null)
+				return Check(match, IsFingerprintNull ? match.GetElement().Password == password 
+													  : this._Fingerprint.CompareFmd(match.GetElement().Finger) < 32768);
+			this.WindowErrorLabel.Content = "mismatch";
+			return null;
 
-				WindowErrorLabel.Content = match == null ? "null" : "matched";
-			}
-			else
+			IRecord<User, ShortDescription<string>> Check(in IRecord<User, ShortDescription<string>> record, bool condition)
 			{
-				int result = _Fingerprint.CompareFmd(this._Userbase[0].GetElement().Finger);
-
-				WindowErrorLabel.Content = result.ToString();
+				if (condition)
+				{
+					this.WindowErrorLabel.Content = "match";
+					return record;
+				}
+				this.WindowErrorLabel.Content = "mismatch";
+				return null;
 			}
 		}
 

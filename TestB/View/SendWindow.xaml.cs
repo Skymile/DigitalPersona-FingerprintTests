@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 
 using FDB.Networking;
+using FDB.Support.Constants;
 
 namespace FDB.View
 {
@@ -21,15 +22,15 @@ namespace FDB.View
 
 		private void WindowButtonSend_Click(object sender, RoutedEventArgs e)
 		{
-			this.WindowLabelInfo.Content = "Starting";
+			this.WindowLabelInfo.Content = Text.Initialization;
 			if (this.WindowLabelAddress.Text == null)
-				this.WindowLabelInfo.Content = "Invalid address detected";
+				this.WindowLabelInfo.Content = Text.Address.Invalid;
 			else if (this.WindowLabelPassword.Text == null)
-				this.WindowLabelInfo.Content = "Invalid password detected";
+				this.WindowLabelInfo.Content = Text.Password.Invalid;
 			else
 			{
 				this.server.Send(this.WindowLabelAddress.Text, this.WindowLabelPassword.Text);
-				this.WindowLabelInfo.Content = "Data send to TCP Server";
+				this.WindowLabelInfo.Content = Text.TCP.DataSend;
 			}
 		}
 	}
